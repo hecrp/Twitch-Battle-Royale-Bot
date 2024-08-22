@@ -17,3 +17,16 @@ Twitch Chat Bot Module
 
 .. automethod:: ttv_battleroyale.bot.BattleRoyaleBot.activate_game
     :noindex:
+
+.. automethod:: ttv_battleroyale.bot.BattleRoyaleBot.autofill_participants
+    :noindex:
+
+.. automethod:: ttv_battleroyale.bot.BattleRoyaleBot.register_participant
+    :noindex:
+
+.. automethod:: ttv_battleroyale.bot.BattleRoyaleBot.wipe_participants
+    :noindex:
+
+.. automethod:: ttv_battleroyale.bot.BattleRoyaleBot.start_battle_royale
+    :noindex:
+

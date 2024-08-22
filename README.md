@@ -24,8 +24,8 @@ This is a Python-based Twitch bot that hosts a simulated battle royale between c
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/twitch-battle-royale-bot.git
-   cd twitch-battle-royale-bot```
+   git clone https://github.com/hecrp/Twitch-Battle-Royale-Bot.git
+   cd Twitch-Battle-Royale-Bot```
 
 2. Install the required dependencies:
 
