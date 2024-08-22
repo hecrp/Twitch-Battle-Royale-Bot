@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ttv_battleroyale.battleroyale_logic &mdash; Battle Royale Twitch Chat Bot 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=2709fde1"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Battle Royale Twitch Chat Bot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Twitch Battle Royale Bot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Battle Royale Twitch Chat Bot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ttv_battleroyale.battleroyale_logic</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ttv_battleroyale.battleroyale_logic</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<div class="viewcode-block" id="Weapon">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.Weapon">[docs]</a>
+<span class="k">class</span> <span class="nc">Weapon</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a weapon in the Battle Royale game.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        name (str): The name of the weapon.</span>
+<span class="sd">        dice (int): The type of dice used to determine damage (e.g., 6 for d6, 8 for d8).ss</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dice</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a new weapon with a name and a dice type.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The name of the weapon.</span>
+<span class="sd">            dice (int): The dice type used for rolling damage.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dice</span> <span class="o">=</span> <span class="n">dice</span>
+
+<div class="viewcode-block" id="Weapon.roll_damage">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.Weapon.roll_damage">[docs]</a>
+    <span class="k">def</span> <span class="nf">roll_damage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Rolls the dice to determine the base damage.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The damage rolled with the weapon&#39;s dice.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dice</span><span class="p">)</span></div>
+</div>
+
+    
+<span class="k">class</span> <span class="nc">Event</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">damage_bonus</span><span class="p">,</span> <span class="n">messages</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Base class representing an event that occurs between rounds.</span>
+
+<span class="sd">        :param name: Name of the event.</span>
+<span class="sd">        :param damage_bonus: Damage bonus provided by the event.</span>
+<span class="sd">        :param messages: List of messages that represent the event when activated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">damage_bonus</span> <span class="o">=</span> <span class="n">damage_bonus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">permanent_bonus</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activated</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">affected_users</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">=</span> <span class="n">messages</span>
+
+    <span class="k">def</span> <span class="nf">select_participant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">participants</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Selects a random participant from the list of participants.</span>
+
+<span class="sd">        :param participants: List of participants.</span>
+<span class="sd">        :return: A randomly selected participant.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">participants</span><span class="p">:</span>
+            <span class="n">selected</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">participants</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">affected_users</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">selected</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">selected</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">activate_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">participants</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Activates the event, selects a participant with a bonus of 0, and applies the effect.</span>
+
+<span class="sd">        :param participants: List of participants.</span>
+<span class="sd">        :return: Message from the activated event.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">activated</span><span class="p">:</span>
+            <span class="n">eligible_participants</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">participants</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">bonus</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="n">eligible_participants</span><span class="p">:</span>
+                <span class="n">affected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_participant</span><span class="p">(</span><span class="n">eligible_participants</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">affected</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">activated</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">message</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">affected</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; BONUS: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">damage_bonus</span><span class="p">)</span>
+                    <span class="n">bonus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">damage_bonus</span>
+                    <span class="n">permanent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">permanent_bonus</span>
+                    <span class="n">event_title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+                    <span class="k">return</span> <span class="n">affected</span><span class="p">,</span> <span class="n">event_title</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">bonus</span><span class="p">,</span> <span class="n">permanent</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">reset_event</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets the event&#39;s state so it can be activated again.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activated</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">affected_users</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="Participant">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.Participant">[docs]</a>
+<span class="k">class</span> <span class="nc">Participant</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a participant in the Battle Royale game.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        name (str): The name of the participant.</span>
+<span class="sd">        weapon (Weapon): The weapon assigned to the participant, or None if no weapon is assigned.s</span>
+<span class="sd">        bonus (int): The bonus to apply when battling</span>
+<span class="sd">        permanent_bonus (bool): Indicates if the current bonus is permanent</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a new participant with a name and no weapon.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The name of the participant.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weapon</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">permanent_weapon</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bonus</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">permanent_bonus</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Participant.assign_weapon">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.Participant.assign_weapon">[docs]</a>
+    <span class="k">def</span> <span class="nf">assign_weapon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weapon</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assigns a weapon to the participant if they don&#39;t already have one.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            weapon (Weapon): The weapon to assign to the participant.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">permanent_weapon</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weapon</span> <span class="o">=</span> <span class="n">weapon</span></div>
+
+
+<div class="viewcode-block" id="Participant.roll_damage">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.Participant.roll_damage">[docs]</a>
+    <span class="k">def</span> <span class="nf">roll_damage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Rolls the damage using the assigned weapon and applies the current bonus. Resets their bonus if not permanent</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The total damage rolled, including any bonuses.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">weapon</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span> 
+        <span class="n">base_damage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weapon</span><span class="o">.</span><span class="n">roll_damage</span><span class="p">()</span>
+        <span class="n">final_damage</span> <span class="o">=</span> <span class="n">base_damage</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bonus</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">permanent_bonus</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bonus</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">final_damage</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="BattleRoyaleGame">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.BattleRoyaleGame">[docs]</a>
+<span class="k">class</span> <span class="nc">BattleRoyaleGame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages the Battle Royale game, including participants and battle simulation.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        participants (list): A list of current participants in the game.</span>
+<span class="sd">        battle_log (list): A log of battles that have taken place.</span>
+<span class="sd">        max_participants (int): The maximum number of participants allowed in the game.</span>
+<span class="sd">        lock (asyncio.Lock): A lock to ensure thread-safe access to participants.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weapons</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">max_participants</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the Battle Royale game.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            max_participants (int): The maximum number of participants allowed in the game. Defaults to 10.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">participants</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weapons</span> <span class="o">=</span> <span class="n">weapons</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">events</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">available_events</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_probability</span> <span class="o">=</span> <span class="mi">75</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">battle_log</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_participants</span> <span class="o">=</span> <span class="n">max_participants</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+
+<div class="viewcode-block" id="BattleRoyaleGame.add_participant">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.BattleRoyaleGame.add_participant">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">add_participant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">participant_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a new participant to the game, ensuring no duplicates and within the limit.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            participant_name (str): The name of the participant to add.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the participant was added, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">participant_name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_full</span><span class="p">():</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Participant</span><span class="p">(</span><span class="n">participant_name</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="BattleRoyaleGame.wipe">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.BattleRoyaleGame.wipe">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">wipe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clears the list of participants and the battle log.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True when the wipe is complete.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">battle_log</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="BattleRoyaleGame.is_full">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.BattleRoyaleGame.is_full">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_full</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the maximum number of participants has been reached.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the game is full, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_participants</span></div>
+
+
+<div class="viewcode-block" id="BattleRoyaleGame.is_ready_to_start">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.BattleRoyaleGame.is_ready_to_start">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_ready_to_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if there are enough participants to start the game.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the game can start, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="BattleRoyaleGame.simulate_battle">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.BattleRoyaleGame.simulate_battle">[docs]</a>
+    <span class="k">def</span> <span class="nf">simulate_battle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Simulates a battle between two random participants.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: A tuple containing the winner&#39;s and loser&#39;s details, or None if there&#39;s a tie.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">fighter1</span><span class="p">,</span> <span class="n">fighter2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">weapon1</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weapons</span><span class="p">)</span>
+        <span class="n">weapon2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weapons</span><span class="p">)</span>
+
+        <span class="n">fighter1</span><span class="o">.</span><span class="n">assign_weapon</span><span class="p">(</span><span class="n">weapon1</span><span class="p">)</span>
+        <span class="n">fighter2</span><span class="o">.</span><span class="n">assign_weapon</span><span class="p">(</span><span class="n">weapon2</span><span class="p">)</span>
+
+        <span class="n">fighter1_bonus</span> <span class="o">=</span> <span class="n">fighter1</span><span class="o">.</span><span class="n">bonus</span>
+        <span class="n">fighter2_bonus</span> <span class="o">=</span> <span class="n">fighter2</span><span class="o">.</span><span class="n">bonus</span>
+
+        <span class="n">roll1</span> <span class="o">=</span> <span class="n">fighter1</span><span class="o">.</span><span class="n">roll_damage</span><span class="p">()</span>
+        <span class="n">roll2</span> <span class="o">=</span> <span class="n">fighter2</span><span class="o">.</span><span class="n">roll_damage</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">roll1</span> <span class="o">&gt;</span> <span class="n">roll2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">record_battle</span><span class="p">(</span><span class="n">fighter1</span><span class="p">,</span> <span class="n">fighter2</span><span class="p">,</span> <span class="n">roll1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">fighter1</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">weapon1</span><span class="p">,</span> <span class="n">roll1</span><span class="p">,</span> <span class="n">fighter1_bonus</span><span class="p">),</span> <span class="p">(</span><span class="n">fighter2</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">weapon2</span><span class="p">,</span> <span class="n">roll2</span><span class="p">,</span> <span class="n">fighter2_bonus</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">roll2</span> <span class="o">&gt;</span> <span class="n">roll1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">record_battle</span><span class="p">(</span><span class="n">fighter2</span><span class="p">,</span> <span class="n">fighter1</span><span class="p">,</span> <span class="n">roll2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">fighter2</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">weapon2</span><span class="p">,</span> <span class="n">roll2</span><span class="p">,</span> <span class="n">fighter2_bonus</span><span class="p">),</span> <span class="p">(</span><span class="n">fighter1</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">weapon1</span><span class="p">,</span> <span class="n">roll1</span><span class="p">,</span> <span class="n">fighter1_bonus</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+        
+<div class="viewcode-block" id="BattleRoyaleGame.simulate_event">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.BattleRoyaleGame.simulate_event">[docs]</a>
+    <span class="k">def</span> <span class="nf">simulate_event</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Triggers a random event from the collection based on the given probability</span>
+<span class="sd">        </span>
+<span class="sd">        :return: Mensaje del evento o None si no se activó ningún evento.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_events</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">available_events</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_probability</span><span class="p">:</span>
+            <span class="n">current_event</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">available_events</span><span class="p">)</span>
+            <span class="n">event_result</span> <span class="o">=</span> <span class="n">current_event</span><span class="o">.</span><span class="n">activate_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">event_result</span><span class="p">:</span>
+                <span class="n">afectado</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">bonus</span><span class="p">,</span> <span class="n">permanent</span> <span class="o">=</span> <span class="n">event_result</span>
+                <span class="n">afectado</span><span class="o">.</span><span class="n">bonus</span> <span class="o">=</span> <span class="n">bonus</span>
+                <span class="n">afectado</span><span class="o">.</span><span class="n">permanent_bonus</span> <span class="o">=</span> <span class="n">permanent</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">available_events</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">current_event</span><span class="p">)</span>
+                
+                <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">message</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="BattleRoyaleGame.record_battle">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.BattleRoyaleGame.record_battle">[docs]</a>
+    <span class="k">def</span> <span class="nf">record_battle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">winner</span><span class="p">,</span> <span class="n">loser</span><span class="p">,</span> <span class="n">damage</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Records the result of a battle and removes the loser from the participant list.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            winner (Participant): The participant who won the battle.</span>
+<span class="sd">            loser (Participant): The participant who lost the battle.</span>
+<span class="sd">            damage (int): The amount of damage dealt in the battle.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">loser</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">battle_log</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">winner</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">loser</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">damage</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="BattleRoyaleGame.get_winner">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.BattleRoyaleGame.get_winner">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_winner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the winner of the game if there is only one participant left.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str or None: The name of the winner, or None if the game is not over.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="BattleRoyaleGame.get_stats">
+<a class="viewcode-back" href="../../ttv_battleroyale.html#ttv_battleroyale.battleroyale_logic.BattleRoyaleGame.get_stats">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns statistics of the battles, including kills and best hits.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary where keys are participant names and values are their stats.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">stats</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">winner</span><span class="p">,</span> <span class="n">loser</span><span class="p">,</span> <span class="n">damage</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">battle_log</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">winner</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stats</span><span class="p">:</span>
+                <span class="n">stats</span><span class="p">[</span><span class="n">winner</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;kills&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;best_hit&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+            <span class="n">stats</span><span class="p">[</span><span class="n">winner</span><span class="p">][</span><span class="s1">&#39;kills&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">stats</span><span class="p">[</span><span class="n">winner</span><span class="p">][</span><span class="s1">&#39;best_hit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="n">winner</span><span class="p">][</span><span class="s1">&#39;best_hit&#39;</span><span class="p">],</span> <span class="n">damage</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">stats</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Héctor Rodríguez (hecrp).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

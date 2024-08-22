@@ -1,0 +1,19 @@
+Modules
+=========================
+
+Battle Royale Game Logic Module
+--------------------------------------------
+
+.. automodule:: ttv_battleroyale.battleroyale_logic
+   :members:
+   :show-inheritance:
+
+Twitch Chat Bot Module
+----------------------------
+
+.. automodule:: ttv_battleroyale.bot
+   :members:
+   :show-inheritance:
+
+.. automethod:: ttv_battleroyale.bot.BattleRoyaleBot.activate_game
+    :noindex:
