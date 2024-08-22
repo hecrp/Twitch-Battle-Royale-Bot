@@ -1,7 +1,5 @@
 .env
 __pycache__/
 .vscode/
-docs/build/
-docs/source/.static/
-docs/source/.templates/
 ttv_battleroyale/zeling_game_assets.py
+docs_rst/
