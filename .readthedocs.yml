@@ -4,7 +4,9 @@ sphinx:
   configuration: docs/conf.py
 
 build:
-  image: "readthedocs/sphinx:latest"
+  os: ubuntu-22.04
+  tools:
+    python: "3.9"
 
 python:
   install:
