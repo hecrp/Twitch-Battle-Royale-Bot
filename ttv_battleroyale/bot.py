@@ -13,6 +13,8 @@ CHANNEL = 'CHANNEL'
 ADMIN = 'ADMIN'
 #MINIMUM SLEEP TIME FOR TESTING PURPOSES. MODIFY AS NEEDED
 EVENT_SLEEP = 1
+#MAXIMUM PARTICIPANTS PER GAME
+MAX_PARTICIPANTS = 30
 
 class BattleRoyaleBot(commands.Bot):
     """
@@ -74,7 +76,7 @@ class BattleRoyaleBot(commands.Bot):
         if ctx.author.name.lower() == ADMIN.lower():
             self.game_active = True
             await self.send_message(ctx, '¡Los Juegos de Sepe van a comenzar! Escribe !apuntar si eres tan valiente como participar...')
-            self.game = BattleRoyaleGame(sample_weapons, sample_events.copy())
+            self.game = BattleRoyaleGame(sample_weapons, sample_events.copy(), MAX_PARTICIPANTS)
         else:
             await self.send_message(ctx, 'Solo el administrador puede activar el juego.')
 

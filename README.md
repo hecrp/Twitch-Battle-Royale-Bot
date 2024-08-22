@@ -2,15 +2,15 @@
 
 ## Overview
 
-This is a Python-based Twitch bot that hosts a simulated battle royale between chat participants. Once activated, up to 10 participants can join the battle. After registration, the battle begins with two random participants facing off every 25 seconds in an epic DnD-style dice roll battle. The battle continues until only one user remains, who is declared the winner. The bot also tracks kills and the highest dice roll for each participant.
+This is a Python-based Twitch bot that hosts a simulated battle royale between chat users. Once activated, up to 30 participants by default can join the battle. When the game is ready and started, two random participants facing off every few seconds in an epic DnD-style dice roll battle. But wait! Random events can also spawn between battles, applying benefitial or detrimental bonuses that can change the course of a random participant's next fight. Battle Royale fights and events continue until only one user remains, who is declared the winner. The bot also tracks kills and the highest dice roll for each participant.
 
 ## Features
 
 - Manual activation by the administrator.
-- Allows up to 10 participants to join.
+- Allows up to a given maximum number of participants to join.
 - Simulates a battle royale with dice rolls and random weapons.
+- Simulate random events between fights.
 - Tracks kills and the highest roll for each participant.
-- Displays final stats after the battle concludes.
 
 ## Setup and Installation
 
@@ -33,13 +33,17 @@ This is a Python-based Twitch bot that hosts a simulated battle royale between c
     pip install -r requirements.txt
     Set up your environment variables:
 
-3. Create a .env file in the root of the project and add your Twitch token, channel name, and admin username:
+3. Modify bot.py and add your Twitch token, channel name, and admin username. Also check the seting for time elapsed between events and maximum number of participans:
 
-    ```makefile
-    TOKEN=your_token_here
-    CHANNEL=your_channel_here
-    ADMIN=your_admin_here
-    Run the bot:
+    ```python
+    TOKEN = 'TOKEN'
+    CHANNEL = 'CHANNEL'
+    ADMIN = 'ADMIN'
+    #MINIMUM SLEEP TIME FOR TESTING PURPOSES. MODIFY AS NEEDED
+    EVENT_SLEEP = 1
+    #MAXIMUM PARTICIPANTS PER GAME
+    MAX_PARTICIPANTS = 30
+
 
 4. Run the bot
 
@@ -49,9 +53,18 @@ This is a Python-based Twitch bot that hosts a simulated battle royale between c
 
 ### Usage
 
+Check ttv_battleroyale/sample_game_assets.py for sample weapons and events details.
+
 !activar: Activates the battle royale (admin only).
+
 !apuntar: Joins the battle royale.
+
+!autofill: If the game isn't full yet, fill the remaining spaces with sample users (admin only).
+
+!wipe: Cleans the participants list (admin only).
+
 !empezar: Starts the battle royale (admin only).
+
 
 ### Contributing
 Feel free to fork this repository and submit pull requests.
