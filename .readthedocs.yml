@@ -4,7 +4,7 @@ sphinx:
   configuration: docs/conf.py
 
 build:
-  image: python:3.9
+  image: "readthedocs/sphinx:latest"
 
 python:
   install:
