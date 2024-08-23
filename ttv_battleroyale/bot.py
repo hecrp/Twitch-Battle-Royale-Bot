@@ -14,7 +14,7 @@ from ttv_battleroyale.sample_game_assets import sample_weapons, sample_events, s
 
 TOKEN = 'TOKEN'
 CHANNEL = 'CHANNEL'
-ADMIN = 'USER'
+ADMIN = 'ADMIN'
 #MINIMUM SLEEP TIME FOR TESTING PURPOSES. MODIFY AS NEEDED
 EVENT_SLEEP = 1
 #MAXIMUM PARTICIPANTS PER GAME
@@ -40,7 +40,7 @@ class BattleRoyaleBot(commands.Bot):
         super().__init__(token=TOKEN, prefix='!', initial_channels=[CHANNEL])
         self.game_active = False
         self.game_started = False
-        #self.game = BattleRoyaleGame(zeling_weapons, zeling_events)
+        self.paused = False
 
     async def event_ready(self):
         """
@@ -73,8 +73,14 @@ class BattleRoyaleBot(commands.Bot):
         """
         await ctx.send(content)
 
+    async def pause_game(self):
+        self.paused = True
+
+    async def resume_game(self):
+        self.paused = False
+
     #Twitch bot commands
-    @commands.command(name='activar')
+    @commands.command(name='activate')
     async def activate_game(self, ctx):
         """
         Activates the Battle Royale game, allowing participants to register.
@@ -113,7 +119,7 @@ class BattleRoyaleBot(commands.Bot):
         else:
             await self.send_message(ctx, 'No se puede autorellenar la lista')
 
-    @commands.command(name='apuntar')
+    @commands.command(name='join')
     async def register_participant(self, ctx):
         """
         Registers a participant in the game if it is active and not full.
@@ -130,6 +136,44 @@ class BattleRoyaleBot(commands.Bot):
             await self.send_message(ctx, 'Los juegos de Sepe no están activados.')
         else:
             await self.send_message(ctx, 'Los juegos se Sepe ya están a tope... Lo siento')
+
+    @commands.command(name='expand')
+    async def expand(self, ctx, num: int):
+        """
+        Expands the maximum number of participants by a given number.
+
+        Args:
+            ctx (twitchio.Context): The context object representing the current chat context.
+            num (int): The number of slots to add to the maximum participants.
+        """
+        if ctx.author.name.lower() != ADMIN.lower():
+            await ctx.send('Este comando solo puede ser utilizado por el administrador.')
+            return
+        
+        if self.game_active and not self.game_started:
+            if num > 0:
+                self.game.max_participants += num
+                await ctx.send(f'Se han añadido {num} plazas. El número máximo de participantes ahora es {self.game.max_participants}.')
+            else:
+                await ctx.send('Por favor, proporciona un número entero positivo.')
+        elif not self.game_active:
+            await ctx.send('El juego no está activado en este momento.')
+        else:
+            await ctx.send('No puedes expandir el número de participantes durante una partida en curso.')
+
+    @commands.command(name='seats')
+    async def vacancies(self, ctx):
+        """
+        Shows the current maximum participants and available spots.
+        """
+        if self.game_active and not self.game_started:
+            current_participants = len(self.game.participants)
+            available_spots = self.game.max_participants - current_participants
+            await ctx.send(f'El número máximo de participantes es {self.game.max_participants}. Ahora mismo quedan {available_spots} plazas libres.')
+        elif not self.game_active:
+            await ctx.send('El juego no está activado ahora mismo.')
+        else:
+            await ctx.send('Hay una partida está en marcha, no hay plazas libres')
 
     @commands.command(name='wipe')
     async def wipe_participants(self, ctx):
@@ -149,7 +193,7 @@ class BattleRoyaleBot(commands.Bot):
         elif ctx.author.name.lower() != ADMIN.lower():
             await self.send_message(ctx, 'Solo el administrador puede limpiar la lista de participantes.')
 
-    @commands.command(name='empezar')
+    @commands.command(name='fight')
     async def start_battle_royale(self, ctx):
         """
         Starts the Battle Royale game if it is ready to start and the user is the admin.
@@ -164,6 +208,36 @@ class BattleRoyaleBot(commands.Bot):
         else:
             await self.send_message(ctx, 'Los Juegos de Sepe no están listos para comenzar.')
 
+    @commands.command(name='pause')
+    async def pause(self, ctx):
+        """
+        Pauses the ongoing game.
+        Only admins can use this command.
+        """
+        if ctx.author.name.lower() == ADMIN.lower():
+            if self.game_active and self.game_started:
+                await self.pause_game()
+                await ctx.send("/me ATENCIÓN: Se ha pausado la partida.")
+            else:
+                await ctx.send("/me No hay ninguna partida en marcha.")
+        else:
+            await ctx.send("/me Solamente un administrador puede pausar la partida.")
+
+    @commands.command(name='resume')
+    async def resume(self, ctx):
+        """
+        Resumes the paused game.
+        Only admins can use this command.
+        """
+        if ctx.author.name.lower() == ADMIN.lower():
+            if self.game_started and self.paused:
+                await self.resume_game()
+                await ctx.send("/me ATENCIÓN: La partida vuelve a estar en marcha.")
+            else:
+                await ctx.send("/me No hay partida en pausa.")
+        else:
+            await ctx.send("/me Solamente un administrador puede reactivar la partida.")
+
     #Main Loop and final stats
     async def run_battle_royale(self, ctx):
         """
@@ -177,15 +251,22 @@ class BattleRoyaleBot(commands.Bot):
 
             await asyncio.sleep(EVENT_SLEEP)
 
-            while True:
-                        event_result = self.game.simulate_event()
-                        if event_result:
-                            event_title, event_message = event_result
-                            await ctx.send("/me EVENT!!  " + event_title + ": " + event_message)
-                            await asyncio.sleep(EVENT_SLEEP)
-                        else:
-                            break
+            # Controla si el juego está pausado
+            while self.paused:
+                await asyncio.sleep(1)  # Espera un segundo antes de volver a comprobar
 
+            while True:
+                event_result = self.game.simulate_event()
+                if event_result:
+                    event_title, event_message = event_result
+                    await ctx.send("/me EVENT!!  " + event_title + ": " + event_message)
+                    await asyncio.sleep(EVENT_SLEEP)
+
+                    # Controla si el juego está pausado después de cada evento
+                    while self.paused:
+                        await asyncio.sleep(1)
+                else:
+                    break
 
             battle_result = self.game.simulate_battle()
 

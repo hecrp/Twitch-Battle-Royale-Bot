@@ -35,9 +35,8 @@ Twitch Battle Royale Bot hosts a simulated battle royale between Twitch chat use
 
     ```bash
     pip install -r requirements.txt
-    Set up your environment variables:
 
-3. Modify bot.py and add your Twitch token, channel name, and admin username. Also tune the constant values to modify elapsed time between events and maximum number of participans:
+3. Modify bot.py and add your Twitch token, channel name, and admin username. Also tune the default values to modify elapsed time between events and maximum number of participans:
 
     ```python
     TOKEN = 'TOKEN'
@@ -75,16 +74,20 @@ Twitch Battle Royale Bot hosts a simulated battle royale between Twitch chat use
 
 Check ttv_battleroyale/sample_game_assets.py for sample weapons and events details.
 
-!activar: Activates the battle royale (admin only).
+#### Admin Commands
 
-!apuntar: Joins the battle royale.
+- `!activate`: Activates the Battle Royale (allows users to join the game).
+- `!autofill`: If the game isn't full, fills the remaining spaces with sample users.
+- `!fight`: Starts the Battle Royale.
+- `!wipe`: Clears the participants list.
+- `!expand {num}`: Expands the current maximum number of participants by {num} free spots.
+- `!pause`: Pauses an ongoing game.
+- `!resume`: Resumes a paused game.
 
-!autofill: If the game isn't full yet, fill the remaining spaces with sample users (admin only).
+#### User Commands
 
-!wipe: Cleans the participants list (admin only).
-
-!empezar: Starts the battle royale (admin only).
-
+- `!join`: Joins the Battle Royale.
+- `!seats`: Shows the nomber of available spots for the next game.
 
 ### Contributing
 Feel free to fork this repository and submit pull requests.

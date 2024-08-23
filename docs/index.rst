@@ -4,6 +4,8 @@ Welcome to Battle Royale Bot's documentation!
 Introduction
 ---------------
 
+Welcome to Twitch Battle Royale Bot documentation. Here you will find Setup and Usage Guides and also the complete API Reference for this Python package.
+
 Twitch Battle Royale Bot hosts a simulated battle royale between Twitch chat users. Once activated, up to 30 participants by default can join the battle. When the game is ready and started, two random participants face off every few seconds in an epic DnD-style dice roll battle. But wait! Random events can also spawn between battles, applying benefitial or detrimental bonuses that can change the course of a random participant's next fight. Battle Royale fights and events continue until only one user remains, who is declared the winner. The bot also tracks kills and the highest dice roll for each participant.
 
 Key Features
@@ -63,13 +65,20 @@ Installation
 Usage
 ------
 
-Check `ttv_battleroyale/sample_game_assets.py` for sample weapons and events details.
+*Admin only Commands*
 
-- **!activar**: Activates the battle royale (admin only).
-- **!apuntar**: Joins the battle royale.
-- **!autofill**: If the game isn't full yet, fill the remaining spaces with sample users (admin only).
-- **!wipe**: Cleans the participants list (admin only).
-- **!empezar**: Starts the battle royale (admin only).
+- !activate: Activates the Battle Royale (allows users to join the game).
+- !autofill: If the game isn't full, fills the remaining spaces with sample users.
+- !fight: Starts the Battle Royale.
+- !wipe: Clears the participants list.
+- !expand {num}: Expands the current maximum number of participants by {num} free spots.
+- !pause: Pauses an ongoing game.
+- !resume: Resumes a paused game.
+
+*User Commands*
+
+- !join: Joins the Battle Royale.
+- !seats: Shows the nomber of available spots for the next game.
 
 API Reference
 -------------
