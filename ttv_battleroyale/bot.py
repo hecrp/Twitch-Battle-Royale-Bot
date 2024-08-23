@@ -7,6 +7,10 @@ import random
 from ttv_battleroyale.battleroyale_logic import BattleRoyaleGame
 from ttv_battleroyale.sample_game_assets import sample_weapons, sample_events, sample_usernames
 
+#TO USE WITH DOCKER CONTAINER
+# TOKEN = os.getenv('TOKEN')
+# CHANNEL = os.getenv('CHANNEL')
+# ADMIN = os.getenv('ADMIN')
 
 TOKEN = 'TOKEN'
 CHANNEL = 'CHANNEL'

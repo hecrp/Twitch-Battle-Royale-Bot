@@ -29,7 +29,7 @@ This is a Python-based Twitch bot that hosts a simulated battle royale between c
 
    ```bash
    git clone https://github.com/hecrp/Twitch-Battle-Royale-Bot.git
-   cd Twitch-Battle-Royale-Bot```
+   cd Twitch-Battle-Royale-Bot
 
 2. Install the required dependencies:
 
@@ -54,6 +54,22 @@ This is a Python-based Twitch bot that hosts a simulated battle royale between c
     ```bash
     python bot_twitch.py
 
+### Install and run with Docker (Testing)
+
+1. Build the Docker image using the provided Dockerile:
+
+    ```bash
+    docker build -t twitch-battle-royale-bot .
+
+2. Run the container. Remember to set up your port and environment variables in the command. Enable this mode by replacing the constants assignment at bot.py
+
+    ```bash
+    docker run -d \ 
+    -p 3000:3000 \ 
+    --name twitch-bot \ 
+    -e TOKEN=your_token \ 
+    -e CHANNEL=your_channel \ 
+    -e ADMIN=your_admin twitch-battle-royale-bot 
 
 ### Usage
 
