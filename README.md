@@ -4,9 +4,9 @@
 
 Twitch Battle Royale Bot hosts a simulated battle royale between Twitch chat users. Once activated, up to 30 participants by default can join the battle. When the game is ready and started, two random participants face off every few seconds in an epic DnD-style dice roll battle. But wait! Random events can also spawn between battles, applying benefitial or detrimental bonuses that can change the course of a random participant's next fight. Battle Royale fights and events continue until only one user remains, who is declared the winner. The bot also tracks kills and the highest dice roll for each participant.
 
-[Check the documentation](https://twitch-battle-royale-bot.readthedocs.io) for more info!
+Check the [documentation](https://twitch-battle-royale-bot.readthedocs.io) for more info!
 
-[Game instructions in Spanish (gh-pages)](https://hecrp.github.io/Twitch-Battle-Royale-Bot/)
+Game instructions in Spanish (gh-pages) [here](https://hecrp.github.io/Twitch-Battle-Royale-Bot/)
 
 ## Features
 
@@ -36,17 +36,19 @@ Twitch Battle Royale Bot hosts a simulated battle royale between Twitch chat use
     ```bash
     pip install -r requirements.txt
 
-3. Modify bot.py and add your Twitch token, channel name, and admin username. Also tune the default values to modify elapsed time between events and maximum number of participans:
+3. Modify `bot.py` (Line 15) and add your Twitch token, channel name, and admin username. Also tune the default values to modify elapsed time between events and maximum number of participans:
 
     ```python
     TOKEN = 'TOKEN'
     CHANNEL = 'CHANNEL'
     ADMIN = 'ADMIN'
+
+    # ...
+
     #MINIMUM SLEEP TIME FOR TESTING PURPOSES. MODIFY AS NEEDED
     EVENT_SLEEP = 1
     #MAXIMUM PARTICIPANTS PER GAME
     MAX_PARTICIPANTS = 30
-
 
 4. Run the bot
 
@@ -89,17 +91,14 @@ Check ttv_battleroyale/sample_game_assets.py for sample weapons and events detai
 - `!join`: Joins the Battle Royale.
 - `!seats`: Shows the nomber of available spots for the next game.
 
-
 ## Creating Custom Game Sets
-
 To enhance your Battle Royale game experience, you can create custom sets of weapons and events. This section will guide you on how to structure your JSON files to integrate new content into the game.
 
 **Creating balanced custom sets** is essential for a fair and engaging gameplay experience. Weapons and events are randomly selected and applied during the game, much like drawing cards from a shuffled deck. Ensure your custom sets are balanced to maintain the excitement and fairness of each match.
 
-Note that the minimum number of weapons and events should be proportional to the number of participants per game. Larger games require more diverse sets to ensure a balanced and dynamic experience.
+*Note that the minimum number of weapons and events should be proportional to the number of participants per game. Larger games require more diverse sets to ensure a balanced and dynamic experience.*
 
 ### Custom Weapons
-
 Create a JSON file for your weapons. Each weapon should have a `name` and `damage`. Here’s a sample structure for `weapons.json`:
 
 ```JSON
@@ -117,7 +116,6 @@ Create a JSON file for your weapons. Each weapon should have a `name` and `damag
 ```
 
 ### Custom Events
-
 Create a JSON file this time for your events. Each event should include a `name`, `bonus`, and `messages`. You can include one or more messages related to the event to give more variability to the same event. Here’s a sample structure for `events.json`:
 
 ```JSON
