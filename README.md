@@ -6,6 +6,8 @@ This is a Python-based Twitch bot that hosts a simulated battle royale between c
 
 [Check the documentation](https://twitch-battle-royale-bot.readthedocs.io) for more info!
 
+[Game instructions in Spanish (gh-pages)](https://hecrp.github.io/Twitch-Battle-Royale-Bot/)
+
 ## Features
 
 - Manual activation by the administrator.
