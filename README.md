@@ -118,7 +118,7 @@ Create a JSON file for your weapons. Each weapon should have a `name` and `damag
 
 ### Custom Events
 
-Create a JSON file this time for your events. Each event should include a `name`, `bonus`, and `messages`. You can include one or more messages related to the event to give more variability to the same event. Here’s a sample structure for events.json:
+Create a JSON file this time for your events. Each event should include a `name`, `bonus`, and `messages`. You can include one or more messages related to the event to give more variability to the same event. Here’s a sample structure for `events.json`:
 
 ```JSON
 [
@@ -141,6 +141,20 @@ Create a JSON file this time for your events. Each event should include a `name`
     // Add more events as needed
 ]
 ```
+
+### Integrating Custom Sets
+
+Save your custom `weapons.json` and `events.json` files in the `ttv_battleroyale/game_assets/your_custom_set` directory.
+
+Load Custom Sets: In `ttv_battleroyale/bot.py` (Line 19), change the game assets paths to your custom JSON files. For example:
+
+```python
+#GAME ASSETS
+WEAPONS = 'game_assets/your_custom_set/weapons.json'
+EVENTS = 'game_assets/your_custom_set/events.json'
+```
+
+By following these instructions, you can create and integrate your own custom sets of weapons and events, enhancing the variety and excitement of your game!
 
 ## Contributing
 Feel free to fork this repository and submit pull requests.
