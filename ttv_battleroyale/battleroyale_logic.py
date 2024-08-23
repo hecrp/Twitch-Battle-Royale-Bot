@@ -1,5 +1,6 @@
 import random
 import asyncio
+import json
 
 class Weapon:
     """
@@ -151,21 +152,42 @@ class BattleRoyaleGame:
         lock (asyncio.Lock): A lock to ensure thread-safe access to participants.
     """
 
-    def __init__(self, weapons, events, max_participants=30, event_probability=50):
+    def __init__(self, weapons_file, events_file, max_participants=30, event_probability=50):
         """
         Initializes the Battle Royale game.
 
         Args:
-            max_participants (int): The maximum number of participants allowed in the game. Defaults to 10.
+            weapons_file (str): The path to the JSON file containing weapon data.
+            events_file (str): The path to the JSON file containing event data.
+            max_participants (int, optional): The maximum number of participants allowed in the game. Defaults to 30.
+            event_probability (int, optional): The probability (in percentage) of an event occurring during the game. Defaults to 50.
         """
         self.participants = []
-        self.weapons = weapons
-        self.events = events
-        self.available_events = events.copy()
+        self.weapons = self.load_weapons(weapons_file)
+        self.events = self.load_events(events_file)
+        self.available_events = self.events.copy()
         self.event_probability = event_probability
         self.battle_log = []
         self.max_participants = max_participants
         self.lock = asyncio.Lock()
+
+    def load_weapons(self, file_path):
+        weapons = []
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+            for item in data:
+                weapon = Weapon(name=item['name'], dice=item['dice'])
+                weapons.append(weapon)
+        return weapons
+
+    def load_events(self, file_path):
+        events = []
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+            for item in data:
+                event = Event(name=item['name'], damage_bonus=item['damage_bonus'], messages=item['messages'])
+                events.append(event)
+        return events
 
     async def add_participant(self, participant_name):
         """

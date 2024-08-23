@@ -1,4 +1,4 @@
-Modules
+Package modules
 =========================
 
 Battle Royale Game Logic Module

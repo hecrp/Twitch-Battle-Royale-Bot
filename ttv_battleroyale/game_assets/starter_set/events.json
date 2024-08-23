@@ -1,0 +1,162 @@
+[
+    {
+        "name": "Blessing of the Ancients",
+        "damage_bonus": 5,
+        "messages": [
+            "{} has been blessed by the Ancients! Their attacks are now more powerful.",
+            "The Ancients smile upon {}. Their strength grows immensely!"
+        ]
+    },
+    {
+        "name": "Curse of the Fallen",
+        "damage_bonus": -3,
+        "messages": [
+            "{} has been cursed by the fallen spirits. Their strength diminishes.",
+            "The shadows of the fallen weigh heavy on {}. Their attacks are weakened."
+        ]
+    },
+    {
+        "name": "Fury of the Storm",
+        "damage_bonus": 4,
+        "messages": [
+            "The storm rages within {}. Their next strike will be ferocious!",
+            "{} channels the fury of the storm, ready to unleash devastation!"
+        ]
+    },
+    {
+        "name": "Betrayal of a Friend",
+        "damage_bonus": -2,
+        "messages": [
+            "{} feels the sting of betrayal. Their resolve falters.",
+            "A friend’s betrayal leaves {} vulnerable, weakening their resolve."
+        ]
+    },
+    {
+        "name": "Blessing of Speed",
+        "damage_bonus": 3,
+        "messages": [
+            "{} feels light as a feather, their attacks come swift and true.",
+            "The winds favor {}, granting them unmatched speed in combat."
+        ]
+    },
+    {
+        "name": "Fatigue",
+        "damage_bonus": -4,
+        "messages": [
+            "{} is overcome by fatigue, their movements slow down.",
+            "Exhaustion takes its toll on {}. They struggle to keep up."
+        ]
+    },
+    {
+        "name": "Divine Protection",
+        "damage_bonus": 6,
+        "messages": [
+            "A divine force shields {} from harm, boosting their confidence!",
+            "{} is surrounded by a radiant aura, bolstering their defenses."
+        ]
+    },
+    {
+        "name": "Poisoned Blade",
+        "damage_bonus": -3,
+        "messages": [
+            "{} has been poisoned! Their attacks are less effective.",
+            "A toxic venom courses through {}, weakening their strikes."
+        ]
+    },
+    {
+        "name": "Rage of the Berserker",
+        "damage_bonus": 5,
+        "messages": [
+            "{} is consumed by berserker rage! Their next attack will be devastating!",
+            "The fury of a berserker fills {}. They’re ready to wreak havoc!"
+        ]
+    },
+    {
+        "name": "Misfire",
+        "damage_bonus": -2,
+        "messages": [
+            "{} fumbles with their weapon, losing precious momentum.",
+            "A critical misfire leaves {} vulnerable and off balance."
+        ]
+    },
+    {
+        "name": "Gift of the Elements",
+        "damage_bonus": 4,
+        "messages": [
+            "The elements themselves empower {}. Their attacks burn with energy!",
+            "{} harnesses the power of the elements, striking with greater force!"
+        ]
+    },
+    {
+        "name": "Haunted by Ghosts",
+        "damage_bonus": -3,
+        "messages": [
+            "Spirits of the past haunt {}, sapping their strength.",
+            "{} is tormented by restless spirits, weakening their resolve."
+        ]
+    },
+    {
+        "name": "Warrior's Spirit",
+        "damage_bonus": 4,
+        "messages": [
+            "{} calls upon the warrior’s spirit, their attacks become relentless!",
+            "The spirit of a fallen warrior guides {}’s hand, making their strikes more deadly!"
+        ]
+    },
+    {
+        "name": "Echoes of Doubt",
+        "damage_bonus": -2,
+        "messages": [
+            "Doubt creeps into {}, shaking their confidence.",
+            "The echoes of past failures weigh on {}, weakening their resolve."
+        ]
+    },
+    {
+        "name": "Phoenix's Rebirth",
+        "damage_bonus": 5,
+        "messages": [
+            "{} rises from the ashes, their strength renewed!",
+            "Like a phoenix, {} is reborn, ready to unleash renewed fury!"
+        ]
+    },
+    {
+        "name": "Sapped by Fear",
+        "damage_bonus": -3,
+        "messages": [
+            "Fear grips {}, sapping their strength.",
+            "{} is paralyzed by fear, making their attacks feeble."
+        ]
+    },
+    {
+        "name": "Blessing of Endurance",
+        "damage_bonus": 4,
+        "messages": [
+            "{} gains the endurance of a mountain, able to withstand any blow!",
+            "Endurance flows through {}, making them nearly unstoppable."
+        ]
+    },
+    {
+        "name": "Shadow of Death",
+        "damage_bonus": -4,
+        "messages": [
+            "{} feels the cold grip of death, weakening their spirit.",
+            "Death’s shadow looms over {}, draining their vitality."
+        ]
+    },
+    {
+        "name": "Fortune's Favor",
+        "damage_bonus": 5,
+        "messages": [
+            "Fortune smiles upon {}, boosting their morale and power!",
+            "{} is favored by fortune, making their attacks more effective."
+        ]
+    },
+    {
+        "name": "Plagued by Nightmares",
+        "damage_bonus": -3,
+        "messages": [
+            "Nightmares plague {}, causing them to falter in combat.",
+            "{} is haunted by terrifying visions, weakening their resolve."
+        ]
+    }
+]
