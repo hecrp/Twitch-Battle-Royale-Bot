@@ -4,7 +4,7 @@ Welcome to Battle Royale Bot's documentation!
 Introduction
 ---------------
 
-This is a Python-based Twitch bot that hosts a simulated battle royale between chat users. Once activated, up to 30 participants by default can join the battle. When the game is ready and started, two random participants facing off every few seconds in an epic DnD-style dice roll battle. But wait! Random events can also spawn between battles, applying benefitial or detrimental bonuses that can change the course of a random participant's next fight. Battle Royale fights and events continue until only one user remains, who is declared the winner. The bot also tracks kills and the highest dice roll for each participant.
+Twitch Battle Royale Bot hosts a simulated battle royale between Twitch chat users. Once activated, up to 30 participants by default can join the battle. When the game is ready and started, two random participants face off every few seconds in an epic DnD-style dice roll battle. But wait! Random events can also spawn between battles, applying benefitial or detrimental bonuses that can change the course of a random participant's next fight. Battle Royale fights and events continue until only one user remains, who is declared the winner. The bot also tracks kills and the highest dice roll for each participant.
 
 Key Features
 ------------
