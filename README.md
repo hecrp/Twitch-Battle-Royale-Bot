@@ -37,7 +37,7 @@ Twitch Battle Royale Bot hosts a simulated battle royale between Twitch chat use
     pip install -r requirements.txt
     Set up your environment variables:
 
-3. Modify bot.py and add your Twitch token, channel name, and admin username. Also check the seting for time elapsed between events and maximum number of participans:
+3. Modify bot.py and add your Twitch token, channel name, and admin username. Also tune the constant values to modify elapsed time between events and maximum number of participans:
 
     ```python
     TOKEN = 'TOKEN'
@@ -61,7 +61,7 @@ Twitch Battle Royale Bot hosts a simulated battle royale between Twitch chat use
     ```bash
     docker build -t twitch-battle-royale-bot .
 
-2. Run the container. Remember to set up your port and environment variables in the command. Enable this mode by replacing the constants assignment at bot.py
+2. Run the container. Remember to set up your port and environment variables in the command. To enable this mode, replace the credentials assignment at bot.py
 
     ```bash
     docker run -d \ 
