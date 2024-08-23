@@ -10,11 +10,13 @@ from ttv_battleroyale.sample_game_assets import sample_weapons, sample_events, s
 
 TOKEN = 'TOKEN'
 CHANNEL = 'CHANNEL'
-ADMIN = 'ADMIN'
+ADMIN = 'USER'
 #MINIMUM SLEEP TIME FOR TESTING PURPOSES. MODIFY AS NEEDED
 EVENT_SLEEP = 1
 #MAXIMUM PARTICIPANTS PER GAME
 MAX_PARTICIPANTS = 30
+#EVENT PROBABILITY (DEFAULT: 50). SET TO 75 FOR TESTING PURPOSES
+EVENT_PROBABILITY = 75
 
 class BattleRoyaleBot(commands.Bot):
     """
@@ -52,6 +54,9 @@ class BattleRoyaleBot(commands.Bot):
         Args:
             message (twitchio.Message): The message object containing the content and metadata.
         """
+        if message.author is None:
+            print("Received message from an unknown source, skipping...")
+            return
         await self.handle_commands(message)
 
     async def send_message(self, ctx, content):
@@ -76,7 +81,7 @@ class BattleRoyaleBot(commands.Bot):
         if ctx.author.name.lower() == ADMIN.lower():
             self.game_active = True
             await self.send_message(ctx, '¡Los Juegos de Sepe van a comenzar! Escribe !apuntar si eres tan valiente como participar...')
-            self.game = BattleRoyaleGame(sample_weapons, sample_events.copy(), MAX_PARTICIPANTS)
+            self.game = BattleRoyaleGame(sample_weapons, sample_events.copy(), MAX_PARTICIPANTS, EVENT_PROBABILITY)
         else:
             await self.send_message(ctx, 'Solo el administrador puede activar el juego.')
 

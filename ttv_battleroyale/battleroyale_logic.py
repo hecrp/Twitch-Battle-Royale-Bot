@@ -151,7 +151,7 @@ class BattleRoyaleGame:
         lock (asyncio.Lock): A lock to ensure thread-safe access to participants.
     """
 
-    def __init__(self, weapons, events, max_participants=30):
+    def __init__(self, weapons, events, max_participants=30, event_probability=50):
         """
         Initializes the Battle Royale game.
 
@@ -162,7 +162,7 @@ class BattleRoyaleGame:
         self.weapons = weapons
         self.events = events
         self.available_events = events.copy()
-        self.event_probability = 75
+        self.event_probability = event_probability
         self.battle_log = []
         self.max_participants = max_participants
         self.lock = asyncio.Lock()
