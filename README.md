@@ -74,8 +74,6 @@ Game instructions in Spanish (gh-pages) [here](https://hecrp.github.io/Twitch-Ba
 
 ## Usage
 
-Check ttv_battleroyale/sample_game_assets.py for sample weapons and events details.
-
 ### Admin Commands
 
 - `!activate`: Activates the Battle Royale (allows users to join the game).
