@@ -89,7 +89,8 @@ Game instructions in Spanish (gh-pages) [here](https://hecrp.github.io/Twitch-Ba
 
 - `!join`: Joins the Battle Royale.
 - `!seats`: Shows the nomber of available spots for the next game.
-- `!answer {word}`: (Only enabled under special conditions) Gives a one word answer for the proposed question.
+- `!answer {word}`: (Only enabled under special conditions) Gives a one word answer for the given question.
+- `!challenge {user}`: (Only enabled under special conditions) The current challenger can fight any other alive user with this command.
 
 ## Creating Custom Game Sets
 To enhance your Battle Royale game experience, you can create custom sets of weapons and events. This section will guide you on how to structure your JSON files to integrate new content into the game.

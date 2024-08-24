@@ -113,7 +113,7 @@ class Participant:
         self.weapon = None
         self.permanent_weapon = False
         self.bonus = 0
-        self.permanent_bonus = False
+        self.permanent_bonus = 0
 
     def assign_weapon(self, weapon):
         """
@@ -135,9 +135,8 @@ class Participant:
         if not self.weapon:
             return 0 
         base_damage = self.weapon.roll_damage()
-        final_damage = base_damage + self.bonus
-        if not self.permanent_bonus:
-            self.bonus = 0
+        final_damage = base_damage + self.bonus + self.permanent_bonus
+        self.bonus = 0
         return final_damage
 
 class Question:
@@ -230,6 +229,8 @@ class BattleRoyaleGame:
         self.available_questions = self.questions.copy()
         self.active_question = None
 
+        self.active_challenger = None
+
         self.max_participants = max_participants
         self.event_probability = event_probability
 
@@ -272,6 +273,21 @@ class BattleRoyaleGame:
             self.participants.append(Participant(participant_name))
             return True
 
+    def get_participant_byname(self, name):
+        """
+        Retrieves a participant by name from the list of participants.
+
+        Args:
+            name (str): The name of the participant to retrieve.
+
+        Returns:
+            Participant: The participant with the given name, or None if not found.
+        """
+        for participant in self.participants:
+            if participant.name == name:
+                return participant
+        return None
+
     async def wipe(self):
         """
         Clears the list of participants and the battle log.
@@ -302,36 +318,36 @@ class BattleRoyaleGame:
         """
         return len(self.participants) > 1
 
-    def simulate_battle(self):
+    def simulate_battle(self, challenge_fight=False, challenge_target=None):
         """
-        Simulates a battle between two random participants.
+        Simulates a battle between two random participants or between a challenger and a target.
+
+        Args:
+            challenge_fight (bool): Whether the battle is a challenge fight.
+            challenge_target (Participant): The target participant for the challenge fight.
 
         Returns:
-            tuple: A tuple containing the winner's and loser's details, or None if there's a tie.
+            tuple: A tuple containing the result and details of the battle.
         """
-        if len(self.participants) < 2:
+        if len(self.participants) < 2 and not challenge_fight:
             return None
 
-        fighter1, fighter2 = random.sample(self.participants, 2)
-
-        if not fighter1.permanent_weapon:
-            weapon1 = random.choice(self.weapons)
-            fighter1.assign_weapon(weapon1)
+        #FIGHTERS SELECTION
+        if challenge_fight:
+            fighter1, fighter2 = self.active_challenger, challenge_target
         else:
-            weapon1 = fighter1.weapon
+            fighter1, fighter2 = random.sample(self.participants, 2)
 
-        if not fighter2.permanent_weapon:
-            weapon2 = random.choice(self.weapons)
-            fighter2.assign_weapon(weapon2)
-        else:
-            weapon2 = fighter2.weapon
+        #RANDOM WEAPON ASSIGNMENT TO NON-PERMANENT WEAPON FIGHTERS
+        weapon1 = fighter1.weapon if fighter1.permanent_weapon else self.assign_random_weapon(fighter1)
+        weapon2 = fighter2.weapon if fighter2.permanent_weapon else self.assign_random_weapon(fighter2)
 
-        fighter1_bonus = fighter1.bonus
-        fighter2_bonus = fighter2.bonus
+        #STORE FINAL BONUS AND ROLL FOR DAMAGE
+        fighter1_bonus = fighter1.bonus + fighter1.permanent_bonus
+        fighter2_bonus = fighter2.bonus + fighter2.permanent_bonus
+        roll1, roll2 = fighter1.roll_damage(), fighter2.roll_damage()
 
-        roll1 = fighter1.roll_damage()
-        roll2 = fighter2.roll_damage()
-
+        #DETERMINE WHO IS THE WINNER. "2" MEANS TIE. SORRY, I'LL THINK SOMETHING BETTER FOR THIS :(
         if roll1 > roll2:
             self.record_battle(fighter1, fighter2, roll1)
             return 0, (fighter1.name, weapon1, roll1, fighter1_bonus), (fighter2.name, weapon2, roll2, fighter2_bonus)
@@ -340,6 +356,20 @@ class BattleRoyaleGame:
             return 1, (fighter2.name, weapon2, roll2, fighter2_bonus), (fighter1.name, weapon1, roll1, fighter1_bonus)
         else:
             return 2, (fighter1.name, weapon1, roll1, fighter1_bonus), (fighter2.name, weapon2, roll2, fighter2_bonus)
+
+    def assign_random_weapon(self, fighter):
+        """
+        Assigns a random weapon to a fighter and updates their weapon attribute.
+
+        Args:
+            fighter (Participant): The participant to assign a weapon to.
+
+        Returns:
+            Weapon: The assigned weapon.
+        """
+        weapon = random.choice(self.weapons)
+        fighter.assign_weapon(weapon)
+        return weapon
         
     def simulate_event(self):
         """
@@ -356,8 +386,11 @@ class BattleRoyaleGame:
             
             if event_result:
                 afectado, name, message, bonus, permanent = event_result
-                afectado.bonus = bonus
-                afectado.permanent_bonus = permanent
+                if permanent:
+                    afectado.permanent_bonus += bonus
+                else:
+                    afectado.bonus += bonus
+                
                 self.available_events.remove(current_event)
                 
                 return name, message
@@ -376,9 +409,23 @@ class BattleRoyaleGame:
             
         if random.randint(1, 100) <= self.event_probability / 5:
             self.active_question = random.choice(self.available_questions)
+            self.available_questions.remove(self.active_question)
             return True
         else:
-            self.active_question = None
+            return False
+
+    def roll_for_challenge(self):
+        """
+        Rolls to determine if a player is now the challenger.
+
+        Returns:
+            Object: Challenger participant, None otherwise.
+        """
+        if not self.active_challenger:
+            if random.randint(1, 100) <= self.event_probability / 5:
+                self.active_challenger = random.choice(self.participants)
+                return self.active_challenger     
+        else:
             return False
 
     def record_battle(self, winner, loser, damage):

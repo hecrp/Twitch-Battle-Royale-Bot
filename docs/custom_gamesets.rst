@@ -12,7 +12,7 @@ Custom Weapons
 
 Create a JSON file for your weapons. Each weapon should have a `name` and `damage`. Here’s a sample structure for `weapons.json`:
 
-.. code-block:: json
+.. code-block:: python
     {
         "name": "Rusty Dagger",
         "damage": 6
@@ -21,7 +21,7 @@ Create a JSON file for your weapons. Each weapon should have a `name` and `damag
         "name": "Steel Longsword",
         "damage": 8
     }
-    // Add more weapons as needed
+    // Add more weapons
     
 
 Custom Events
@@ -29,7 +29,7 @@ Custom Events
 
 Create a JSON file this time for your events. Each event should include a `name`, `bonus`, and `messages`. You can include one or more messages related to the event to give more variability to the same event. Here’s a sample structure for events.json:
 
-.. code-block:: json
+.. code-block:: python
     {
         "name": "Blessing of the Ancients",
         "bonus": 5,
@@ -46,4 +46,4 @@ Create a JSON file this time for your events. Each event should include a `name`
             "The shadows of the fallen weigh heavy on {}. Their attacks are weakened."
         ]
     }
-    // Add more events as needed
+    // Add more events

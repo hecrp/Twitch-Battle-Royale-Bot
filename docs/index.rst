@@ -67,18 +67,20 @@ Usage
 
 *Admin only Commands*
 
-- !activate: Activates the Battle Royale (allows users to join the game).
-- !autofill: If the game isn't full, fills the remaining spaces with sample users.
-- !fight: Starts the Battle Royale.
-- !wipe: Clears the participants list.
-- !expand {num}: Expands the current maximum number of participants by {num} free spots.
-- !pause: Pauses an ongoing game.
-- !resume: Resumes a paused game.
+- `!activate`: Activates the Battle Royale (allows users to join the game).
+- `!autofill`: If the game isn't full, fills the remaining spaces with sample users.
+- `!fight`: Starts the Battle Royale.
+- `!wipe`: Clears the participants list.
+- `!expand {num}`: Expands the current maximum number of participants by {num} free spots.
+- `!pause`: Pauses an ongoing game.
+- `!resume`: Resumes a paused game.
 
 *User Commands*
 
-- !join: Joins the Battle Royale.
-- !seats: Shows the nomber of available spots for the next game.
+- `!join`: Joins the Battle Royale.
+- `!seats`: Shows the nomber of available spots for the next game.
+- `!answer {word}`: (Only enabled under special conditions) Gives a one word answer for the given question.
+- `!challenge {user}`: (Only enabled under special conditions) The current challenger can fight any other alive user with this command.
 
 API Reference
 -------------

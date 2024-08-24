@@ -21,7 +21,7 @@ WEAPONS = 'game_assets/cosmic_horror_set/weapons.json'
 EVENTS = 'game_assets/cosmic_horror_set/events.json'
 QUESTIONS = cosmic_horror_questions
 #MINIMUM SLEEP TIME FOR TESTING PURPOSES. MODIFY AS NEEDED
-EVENT_SLEEP = 14
+EVENT_SLEEP = 5
 FIGHT_SLEEP = 7
 #MAXIMUM PARTICIPANTS PER GAME
 MAX_PARTICIPANTS = 30
@@ -229,8 +229,7 @@ class BattleRoyaleBot(commands.Bot):
                     
                     if isinstance(prize, int):
                         if is_permanent:
-                            participant.bonus = prize
-                            participant.permanent_bonus = True
+                            participant.permanent_bonus += prize
                         else:
                             participant.bonus += prize
                     elif isinstance(prize, str):
@@ -241,6 +240,22 @@ class BattleRoyaleBot(commands.Bot):
                                 participant.permanent_weapon = True
 
                     await ctx.send(f"/me Correct answer, {ctx.author.name}! {question.get_correct_message()}")
+                else:
+                    print("WRONG ANSWER")
+
+    @commands.command(name="challenge")
+    async def challenge(self, ctx, target_user: str):
+
+        if not self.paused and self.game.active_challenger and ctx.author.name.lower() == self.game.active_challenger.name.lower():
+
+            target = next((p for p in self.game.participants if p.name.lower() == target_user.lower()), None)
+            if target:
+                await ctx.send(f"/me NEW CHALLENGE! {ctx.author.name} will face {target_user} in the next battle!")
+                battle_result = self.game.simulate_battle(True, target)
+                await self.post_battle_result(ctx, battle_result)
+                self.game.active_challenger = None
+            else:
+                await ctx.send(f"/me Hey! {ctx.author.name}, the user {target_user} is not playing right now. Try again...")
 
     @commands.command(name='pause')
     async def pause(self, ctx):
@@ -272,6 +287,32 @@ class BattleRoyaleBot(commands.Bot):
         else:
             await ctx.send("/me Only and admin can resume the game.")
 
+    async def post_battle_result(self, ctx, battle_result):
+        whowin, (winner, weapon1, roll1, bonus1), (loser, weapon2, roll2, bonus2) = battle_result
+        
+        if whowin in [0, 2]:
+            battle_message = (
+                f"FIGHT!! {winner} equipped with The {weapon1.name} (D{weapon1.dice}) and ({bonus1:+}) bonus "
+                f"VS {loser} equipped with The {weapon2.name} (D{weapon2.dice}) and ({bonus2:+}) bonus!"
+            )
+        else:
+            battle_message = (
+                f"FIGHT!! {loser} equipped with The {weapon2.name} (D{weapon2.dice}) and ({bonus2:+}) bonus "
+                f"VS {winner} equipped with The {weapon1.name} (D{weapon1.dice}) and ({bonus1:+}) bonus!"
+            )
+
+        await self.send_message(ctx, battle_message)
+
+        await asyncio.sleep(FIGHT_SLEEP)
+        
+        result_message = (
+            f"RESULT: {winner} rolled a total of {roll1} damage and killed {loser} ({roll2} damage)! "
+            f"" 
+            if whowin in [0, 1] else 
+            f"TIE!! Both players dealt {roll1} damage. They almost killed each other... The battle is fierce!"
+        )
+        await self.send_message(ctx, result_message)
+
     async def run_battle_royale(self, ctx):
         """
         Runs the Battle Royale game loop, simulating events and battles until there is one winner.
@@ -294,6 +335,11 @@ class BattleRoyaleBot(commands.Bot):
                 else:
                     break
 
+            #CHALLENGES.
+            if not self.paused and self.game.roll_for_challenge():
+                await ctx.send(f"/me ATTENTION {self.game.active_challenger.name}, YOU are now the Challenger!! Use !challenge user to fight any other user alive.")
+                await asyncio.sleep(EVENT_SLEEP)
+
             #QUESTIONS
             if not self.paused and self.game.roll_for_question():
                 await ctx.send(f"/me Question!! Answer using ONE word following the !answer command: {self.game.active_question.question}")
@@ -302,22 +348,7 @@ class BattleRoyaleBot(commands.Bot):
             #FIGHT
             if not self.paused:
                 battle_result = self.game.simulate_battle()
-                whowin, (winner, weapon1, roll1, bonus1), (loser, weapon2, roll2, bonus2) = battle_result
-                
-                battle_message = (
-                    f"FIGHT!! {winner if whowin in [0, 2] else loser} equipped with The {weapon1.name} (D{weapon1.dice}) and ({bonus1:+}) bonus "
-                    f"VS {loser if whowin in [0, 2] else winner} equipped with The {weapon2.name} (D{weapon2.dice}) and ({bonus2:+}) bonus!"
-                )
-                await self.send_message(ctx, battle_message)
-                await asyncio.sleep(FIGHT_SLEEP)
-                
-                result_message = (
-                    f"RESULT: {winner} rolled a total of {roll1} damage and killed {loser} ({roll2} damage)! "
-                    f"" 
-                    if whowin in [0, 1] else 
-                    f"TIE!! Both players dealt {roll1} damage. They almost killed each other... The battle is fierce!"
-                )
-                await self.send_message(ctx, result_message)
+                await self.post_battle_result(ctx, battle_result)
         
         #GAME FINISHED: WINNER ANNOUNCE
         winner = self.game.get_winner()
