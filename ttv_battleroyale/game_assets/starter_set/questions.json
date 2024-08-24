@@ -1,0 +1,72 @@
+[
+    {
+        "question": "What has roots as nobody sees, is taller than trees, up, up it goes, and yet never grows?",
+        "answer": "Mountain",
+        "correct_message": "You have the endurance of a mountain! Your defense increases!",
+        "prize": 4,
+        "is_permanent": true
+    },
+    {
+        "question": "This thing all things devours: Birds, beasts, trees, flowers; Gnaws iron, bites steel; Grinds hard stones to meal; Slays king, ruins town, and beats high mountain down.",
+        "answer": "Time",
+        "correct_message": "You have understood the power of Time itself. Your wisdom grows!",
+        "prize": "Orbital Strike Device",
+        "is_permanent": false
+    },
+    {
+        "question": "Voiceless it cries, Wingless flutters, Toothless bites, Mouthless mutters. What is it?",
+        "answer": "Wind",
+        "correct_message": "The wind whispers your name, guiding your strikes!",
+        "prize": 3,
+        "is_permanent": false
+    },
+    {
+        "question": "A box without hinges, key, or lid, yet golden treasure inside is hid.",
+        "answer": "Egg",
+        "correct_message": "The treasure of the egg nourishes your strength. Your attacks are more powerful!",
+        "prize": 2,
+        "is_permanent": false
+    },
+    {
+        "question": "It cannot be seen, cannot be felt, cannot be heard, cannot be smelt. It lies behind stars and under hills, and empty holes it fills. It comes first and follows after, Ends life, kills laughter.",
+        "answer": "Darkness",
+        "correct_message": "You understand the power of Darkness, using it to your advantage!",
+        "prize": "Shadow Blade",
+        "is_permanent": true
+    },
+    {
+        "question": "Alive without breath, As cold as death; Never thirsty, ever drinking, All in mail never clinking.",
+        "answer": "Fish",
+        "correct_message": "The cunning of the fish is now yours, increasing your agility!",
+        "prize": 2,
+        "is_permanent": false
+    },
+    {
+        "question": "An eye in a blue face saw an eye in a green face. 'That eye is like to this eye' Said the first eye, 'But in low place, not in high place.'",
+        "answer": "Sun",
+        "correct_message": "The Sun’s light fills you with warmth, boosting your health!",
+        "prize": 3,
+        "is_permanent": false
+    },
+    {
+        "question": "It cannot be seen, cannot be felt, cannot be heard, cannot be smelt. What is it?",
+        "answer": "Air",
+        "correct_message": "You harness the power of Air, moving swiftly in battle!",
+        "prize": "Hunter’s Bow",
+        "is_permanent": false
+    },
+    {
+        "question": "If you look at the numbers on my face, you won’t find thirteen anyplace.",
+        "answer": "Clock",
+        "correct_message": "The clock reveals time’s secrets to you, increasing your awareness!",
+        "prize": 3,
+        "is_permanent": false
+    },
+    {
+        "question": "What has a heart that doesn’t beat?",
+        "answer": "Artichoke",
+        "correct_message": "You have uncovered the artichoke's mystery, gaining resilience!",
+        "prize": 1,
+        "is_permanent": false
+    }
+]

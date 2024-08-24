@@ -1,0 +1,72 @@
+[
+    {
+        "question": "I am the dark that lives beyond the stars, always present but never seen. What am I?",
+        "answer": "void",
+        "correct_message": "Indeed, the void is ever-present, lurking beyond the stars, unseen but all-encompassing.",
+        "prize": 2,
+        "is_permanent": false
+    },
+    {
+        "question": "I have many faces, but none can see me. I am eternal, yet I end all. What am I?",
+        "answer": "death",
+        "correct_message": "You understand the inevitability of death, the eternal force that ends all things.",
+        "prize": 3,
+        "is_permanent": true
+    },
+    {
+        "question": "I slither without a body, whispering secrets that drive men mad. What am I?",
+        "answer": "shadow",
+        "correct_message": "A shadow, indeed. It slithers without form, whispering madness into the minds of the unwary.",
+        "prize": 1,
+        "is_permanent": false
+    },
+    {
+        "question": "I am not alive, yet I grow; I do not breathe, yet I consume. What am I?",
+        "answer": "fire",
+        "correct_message": "Fire, a living paradox. It grows, consumes, and yet is not truly alive.",
+        "prize": "Eldritch Flame",
+        "is_permanent": true
+    },
+    {
+        "question": "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?",
+        "answer": "echo",
+        "correct_message": "An echo, yes. A voice of the wind, speaking without a body.",
+        "prize": 2,
+        "is_permanent": false
+    },
+    {
+        "question": "I am the keeper of time, but I do not tick. I silently watch all things, from beginning to end. What am I?",
+        "answer": "stars",
+        "correct_message": "The stars, silent keepers of time, watching the cosmos from beginning to end.",
+        "prize": "Celestial Blade",
+        "is_permanent": true
+    },
+    {
+        "question": "I have no wings, but I can fly. I have no eyes, but I can cry. What am I?",
+        "answer": "cloud",
+        "correct_message": "A cloud, floating in the sky, shedding tears upon the world below.",
+        "prize": 1,
+        "is_permanent": false
+    },
+    {
+        "question": "I guard the gate to the unknown, and once you pass, there is no return. What am I?",
+        "answer": "dream",
+        "correct_message": "A dream, guarding the threshold to the unknown, from which there is no return.",
+        "prize": 2,
+        "is_permanent": true
+    },
+    {
+        "question": "I can be cracked, made, told, and played. What am I?",
+        "answer": "riddle",
+        "correct_message": "A riddle, indeed. A puzzle of words, meant to challenge the mind.",
+        "prize": 1,
+        "is_permanent": false
+    },
+    {
+        "question": "I exist in the realm of fear, born from the mind's eye. I am as real as you believe me to be. What am I?",
+        "answer": "nightmare",
+        "correct_message": "A nightmare, a creation of the mind's eye, as real as your fear allows.",
+        "prize": "Nightmare Blade",
+        "is_permanent": true
+    }
+]

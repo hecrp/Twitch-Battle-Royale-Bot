@@ -5,7 +5,7 @@ import asyncio
 from twitchio.ext import commands
 import random
 from ttv_battleroyale.battleroyale_logic import BattleRoyaleGame
-from ttv_battleroyale.sample_game_assets import sample_usernames, sample_questions, cosmic_horror_questions
+from ttv_battleroyale.sample_game_assets import sample_usernames
 
 #TO USE WITH DOCKER CONTAINER
 # TOKEN = os.getenv('TOKEN')
@@ -19,10 +19,10 @@ ADMIN = 'ADMIN'
 #GAME ASSETS
 WEAPONS = 'game_assets/cosmic_horror_set/weapons.json'
 EVENTS = 'game_assets/cosmic_horror_set/events.json'
-QUESTIONS = cosmic_horror_questions
+QUESTIONS = 'game_assets/cosmic_horror_set/questions.json'
 #MINIMUM SLEEP TIME FOR TESTING PURPOSES. MODIFY AS NEEDED
-EVENT_SLEEP = 5
-FIGHT_SLEEP = 7
+EVENT_SLEEP = 1
+FIGHT_SLEEP = 1
 #MAXIMUM PARTICIPANTS PER GAME
 MAX_PARTICIPANTS = 30
 #EVENT PROBABILITY (DEFAULT: 50). SET TO 75 FOR TESTING PURPOSES
@@ -239,7 +239,7 @@ class BattleRoyaleBot(commands.Bot):
                             if is_permanent:
                                 participant.permanent_weapon = True
 
-                    await ctx.send(f"/me Correct answer, {ctx.author.name}! {question.get_correct_message()}")
+                    await ctx.send(f"/me Correct answer, {ctx.author.name} ! {question.get_correct_message()}")
                 else:
                     print("WRONG ANSWER")
 
@@ -255,7 +255,7 @@ class BattleRoyaleBot(commands.Bot):
                 await self.post_battle_result(ctx, battle_result)
                 self.game.active_challenger = None
             else:
-                await ctx.send(f"/me Hey! {ctx.author.name}, the user {target_user} is not playing right now. Try again...")
+                await ctx.send(f"/me Hey! {ctx.author.name} , the user {target_user} is not playing right now. Try again...")
 
     @commands.command(name='pause')
     async def pause(self, ctx):
@@ -337,7 +337,7 @@ class BattleRoyaleBot(commands.Bot):
 
             #CHALLENGES.
             if not self.paused and self.game.roll_for_challenge():
-                await ctx.send(f"/me ATTENTION {self.game.active_challenger.name}, YOU are now the Challenger!! Use !challenge user to fight any other user alive.")
+                await ctx.send(f"/me ATTENTION {self.game.active_challenger.name} , YOU are now the Challenger!! Use !challenge user to fight any other user alive.")
                 await asyncio.sleep(EVENT_SLEEP)
 
             #QUESTIONS

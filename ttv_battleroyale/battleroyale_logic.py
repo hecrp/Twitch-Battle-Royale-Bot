@@ -225,7 +225,7 @@ class BattleRoyaleGame:
         self.events = self.load_events(events_file)
         self.available_events = self.events.copy()
 
-        self.questions = questions_file
+        self.questions = self.load_questions(questions_file)
         self.available_questions = self.questions.copy()
         self.active_question = None
 
@@ -251,9 +251,24 @@ class BattleRoyaleGame:
         with open(file_path, 'r') as f:
             data = json.load(f)
             for item in data:
-                event = Event(name=item['name'], damage_bonus=item['damage_bonus'], messages=item['messages'])
+                event = Event(name=item['name'], 
+                              damage_bonus=item['damage_bonus'], 
+                              messages=item['messages'])
                 events.append(event)
         return events
+    
+    def load_questions(self, file_path):
+        questions = []
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+            for item in data:
+                question = Question(question=item['question'], 
+                                    answer=item['answer'], 
+                                    correct_message=item['correct_message'], 
+                                    prize=item['prize'], 
+                                    is_permanent=item['is_permanent'])
+                questions.append(question)
+        return questions
 
     async def add_participant(self, participant_name):
         """
