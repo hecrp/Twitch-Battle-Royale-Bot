@@ -1,0 +1,162 @@
+[
+    {
+        "name": "Ritual of the Old Ones",
+        "damage_bonus": 5,
+        "messages": [
+            "{} performed a dark ritual under the blood moon. The favor of the Old Ones grants them strength.",
+            "The air grows cold as {} finishes the incantation, drawing power from the depths of the cosmos."
+        ]
+    },
+    {
+        "name": "Glimpse of the Beyond",
+        "damage_bonus": -3,
+        "messages": [
+            "{} caught a fleeting glimpse of the horrors beyond reality. Their mind cracks under the pressure.",
+            "A brief look into the void leaves {} trembling, sanity slipping through their fingers."
+        ]
+    },
+    {
+        "name": "Whispers in the Dark",
+        "damage_bonus": 4,
+        "messages": [
+            "{} hears faint whispers from the shadows, guiding them to their next victim.",
+            "The dark speaks to {}, offering them a chilling advantage in the battle ahead."
+        ]
+    },
+    {
+        "name": "Eldritch Transformation",
+        "damage_bonus": 6,
+        "messages": [
+            "{}'s body contorts and changes as they embrace the power of an ancient being.",
+            "With a howl, {} transforms into something not entirely human, gaining terrifying strength."
+        ]
+    },
+    {
+        "name": "The Stars Align",
+        "damage_bonus": 7,
+        "messages": [
+            "The heavens shift and {} feels the cosmic energies surging through them.",
+            "Under a perfect night sky, {} gains an otherworldly power as the stars align."
+        ]
+    },
+    {
+        "name": "Creeping Madness",
+        "damage_bonus": -4,
+        "messages": [
+            "{} feels their mind slipping as the madness creeps in, weakening their resolve.",
+            "An invisible force claws at {}'s sanity, leaving them vulnerable to the horrors ahead."
+        ]
+    },
+    {
+        "name": "Void's Embrace",
+        "damage_bonus": 3,
+        "messages": [
+            "{} feels a comforting darkness envelop them, granting them protection against harm.",
+            "The void reaches out to {}, offering a cold embrace and a momentary shield."
+        ]
+    },
+    {
+        "name": "Awakening of the Deep",
+        "damage_bonus": 8,
+        "messages": [
+            "A monstrous entity stirs in the depths, answering {}'s call with unimaginable power.",
+            "{} commands the forces of the deep, their enemies cower in terror as the ground trembles."
+        ]
+    },
+    {
+        "name": "Shadowy Pact",
+        "damage_bonus": 2,
+        "messages": [
+            "{} strikes a bargain with a shadowy figure, gaining power at a terrible cost.",
+            "A deal is made in the dark, and {} gains a fleeting advantage in the battle."
+        ]
+    },
+    {
+        "name": "Insidious Nightmare",
+        "damage_bonus": -5,
+        "messages": [
+            "{} is haunted by a nightmare too real, leaving them shaken and weak.",
+            "The horrors of the dream world bleed into reality, sapping {}'s strength."
+        ]
+    },
+    {
+        "name": "Echoes of the Past",
+        "damage_bonus": 4,
+        "messages": [
+            "{} hears the voices of those who have fallen, their strength flows through them.",
+            "The past reaches out to {}, granting them power from beyond the grave."
+        ]
+    },
+    {
+        "name": "Cosmic Revelation",
+        "damage_bonus": -2,
+        "messages": [
+            "{} glimpses the infinite cosmos, their mind reels from the enormity of it all.",
+            "The revelation of the cosmos leaves {} staggered, their thoughts scattered."
+        ]
+    },
+    {
+        "name": "Eldritch Storm",
+        "damage_bonus": 6,
+        "messages": [
+            "A storm of chaotic energy swirls around {}, empowering them with uncontrollable force.",
+            "The sky darkens as an eldritch storm descends, {} harnesses its power."
+        ]
+    },
+    {
+        "name": "Madness Unleashed",
+        "damage_bonus": 5,
+        "messages": [
+            "{} gives in to the madness, their attacks becoming wild and unpredictable.",
+            "The madness within {} bursts forth, fueling them with terrifying energy."
+        ]
+    },
+    {
+        "name": "Astral Communion",
+        "damage_bonus": 7,
+        "messages": [
+            "{} communes with beings from the stars, gaining their knowledge and strength.",
+            "An astral entity connects with {}, sharing its otherworldly power."
+        ]
+    },
+    {
+        "name": "Reality Fracture",
+        "damage_bonus": -3,
+        "messages": [
+            "{} feels reality slipping away, their grip on the material world weakens.",
+            "The boundary between worlds thins, leaving {} disoriented and vulnerable."
+        ]
+    },
+    {
+        "name": "Creeping Void",
+        "damage_bonus": 3,
+        "messages": [
+            "The void creeps into {}, dark tendrils of power seep into their soul.",
+            "{} feels the void's cold embrace, their power increases as the light fades."
+        ]
+    },
+    {
+        "name": "Unspeakable Terror",
+        "damage_bonus": -4,
+        "messages": [
+            "{} is struck by an unspeakable terror, paralyzing them with fear.",
+            "A terror beyond comprehension grips {}, weakening their resolve."
+        ]
+    },
+    {
+        "name": "Flesh Warping",
+        "damage_bonus": 2,
+        "messages": [
+            "{}'s flesh begins to warp and twist, the pain fuels their rage.",
+            "The warping of {}'s flesh grants them a surge of brutal strength."
+        ]
+    },
+    {
+        "name": "Forbidden Knowledge",
+        "damage_bonus": 5,
+        "messages": [
+            "{} unlocks a secret long forgotten, its power floods their mind.",
+            "The weight of forbidden knowledge presses down on {}, empowering them with dark energy."
+        ]
+    }
+]

@@ -1,0 +1,102 @@
+[
+    {
+        "name": "Eldritch Dagger",
+        "dice": 6,
+        "description": "A dagger that whispers maddening secrets to its wielder."
+    },
+    {
+        "name": "Tentacle Whip",
+        "dice": 8,
+        "description": "A whip made from the living tentacle of an ancient being."
+    },
+    {
+        "name": "Cursed Tome",
+        "dice": 10,
+        "description": "A book filled with forbidden knowledge that drains the life of those who read it."
+    },
+    {
+        "name": "Starlight Blade",
+        "dice": 12,
+        "description": "A sword forged from the heart of a dead star, its edge glows with a cold light."
+    },
+    {
+        "name": "Void Staff",
+        "dice": 8,
+        "description": "A staff that can summon the darkness between the stars to consume enemies."
+    },
+    {
+        "name": "Mindflayer's Gauntlet",
+        "dice": 10,
+        "description": "A gauntlet that channels psychic energy to crush the minds of foes."
+    },
+    {
+        "name": "The Black Blade",
+        "dice": 20,
+        "description": "A legendary sword said to be cursed by an ancient cosmic entity."
+    },
+    {
+        "name": "Abyssal Axe",
+        "dice": 12,
+        "description": "An axe that resonates with the screams of the damned."
+    },
+    {
+        "name": "Shattered Mirror Shield",
+        "dice": 6,
+        "description": "A shield made from shards of a mirror that once showed the true form of an eldritch god."
+    },
+    {
+        "name": "Whispering Spear",
+        "dice": 8,
+        "description": "A spear that mutters the names of its next victims in the wielder's ear."
+    },
+    {
+        "name": "Blasphemous Blade",
+        "dice": 10,
+        "description": "A sword forged in the fires of a forgotten hell, cursed to drink the blood of the innocent."
+    },
+    {
+        "name": "Gaze of the Abyss",
+        "dice": 8,
+        "description": "A staff with an eye at its tip, gazing into it reveals truths that can shatter minds."
+    },
+    {
+        "name": "Warped Scythe",
+        "dice": 12,
+        "description": "A scythe that distorts reality around it, making it difficult to predict its movements."
+    },
+    {
+        "name": "Chained Horror",
+        "dice": 6,
+        "description": "A flail with chains that writhe as if alive, embedding fear in the hearts of those it strikes."
+    },
+    {
+        "name": "Necrotic Claw",
+        "dice": 7,
+        "description": "A claw weapon that drains the life force of its victims, leaving them withered husks."
+    },
+    {
+        "name": "Phantom Lantern",
+        "dice": 8,
+        "description": "A lantern that burns with an eerie light, its flames consuming the souls of the damned."
+    },
+    {
+        "name": "Ethereal Bow",
+        "dice": 10,
+        "description": "A bow that fires arrows of pure energy, each shot tears through the fabric of reality."
+    },
+    {
+        "name": "Obsidian Mace",
+        "dice": 9,
+        "description": "A mace carved from the black stone of an ancient monolith, it carries a weight of despair."
+    },
+    {
+        "name": "Void Razor",
+        "dice": 6,
+        "description": "A razor-sharp blade that can cut through the very essence of a being, leaving no trace behind."
+    },
+    {
+        "name": "Haunted Warhammer",
+        "dice": 12,
+        "description": "A warhammer haunted by the spirits of those it has slain, their wails echo with each strike."
+    }
+]

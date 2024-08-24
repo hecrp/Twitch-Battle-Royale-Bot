@@ -13,8 +13,8 @@ Game instructions in Spanish (gh-pages) [here](https://hecrp.github.io/Twitch-Ba
 - Manual activation by the administrator.
 - Allows up to a given maximum number of participants to join.
 - Simulates a battle royale with dice rolls and random weapons.
-- Simulate random events between fights.
-- Tracks kills and the highest roll for each participant.
+- Simulate random events and quiz challenges between fights.
+- Tracks kills and the highest roll for each participant to build the final ranking.
 
 ## Setup and Installation
 
@@ -47,6 +47,7 @@ Game instructions in Spanish (gh-pages) [here](https://hecrp.github.io/Twitch-Ba
 
     #MINIMUM SLEEP TIME FOR TESTING PURPOSES. MODIFY AS NEEDED
     EVENT_SLEEP = 1
+    FIGHT_SLEEP = 1
     #MAXIMUM PARTICIPANTS PER GAME
     MAX_PARTICIPANTS = 30
 
@@ -88,6 +89,7 @@ Game instructions in Spanish (gh-pages) [here](https://hecrp.github.io/Twitch-Ba
 
 - `!join`: Joins the Battle Royale.
 - `!seats`: Shows the nomber of available spots for the next game.
+- `!answer {word}`: (Only enabled under special conditions) Gives a one word answer for the proposed question.
 
 ## Creating Custom Game Sets
 To enhance your Battle Royale game experience, you can create custom sets of weapons and events. This section will guide you on how to structure your JSON files to integrate new content into the game.

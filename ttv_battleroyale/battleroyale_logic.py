@@ -140,6 +140,64 @@ class Participant:
             self.bonus = 0
         return final_damage
 
+class Question:
+    def __init__(self, question, answer, correct_message, prize, is_permanent):
+        """
+        Initializes a riddle for the game.
+
+        Args:
+            question (str): The riddle's question.
+            answer (str): The correct answer to the riddle.
+            correct_message (str): The message to display when the answer is correct, including any bonus or prize information.
+            prize (str or int): The prize awarded for answering correctly. Can be a numeric bonus or the name of a weapon.
+            is_permanent (bool): Flag indicating if the prize is permanent or temporary.
+        """
+        self.question = question
+        self.answer = answer
+        self.correct_message = correct_message
+        self.prize = prize
+        self.is_permanent = is_permanent
+
+    def check_answer(self, given_answer):
+        """
+        Checks if the provided answer is correct.
+
+        Args:
+            given_answer (str): The answer provided by the player.
+
+        Returns:
+            bool: True if the answer is correct, False otherwise.
+        """
+        return given_answer.strip().lower() == self.answer.strip().lower()
+
+    def get_prize(self):
+        """
+        Returns the prize information, converting it to a numeric bonus if applicable.
+
+        Returns:
+            tuple: A tuple containing the prize (int or str) and a boolean indicating if it is permanent.
+        """
+        try:
+            # Try converting prize to integer (bonus)
+            prize_value = int(self.prize)
+        except ValueError:
+            # If conversion fails, prize is a weapon name (str)
+            prize_value = self.prize
+        
+        return prize_value, self.is_permanent
+
+    def get_correct_message(self):
+        """
+        Returns the correct message including the prize information.
+
+        Returns:
+            str: The message indicating the prize and whether it is permanent or not.
+        """
+        prize_info = f"Prize: {self.prize}"
+        if self.is_permanent:
+            prize_info += " (Permanent)"
+        
+        return f"{self.correct_message} {prize_info}"
 
 class BattleRoyaleGame:
     """
@@ -152,7 +210,7 @@ class BattleRoyaleGame:
         lock (asyncio.Lock): A lock to ensure thread-safe access to participants.
     """
 
-    def __init__(self, weapons_file, events_file, max_participants=30, event_probability=50):
+    def __init__(self, weapons_file, events_file, questions_file, max_participants=30, event_probability=50):
         """
         Initializes the Battle Royale game.
 
@@ -164,11 +222,18 @@ class BattleRoyaleGame:
         """
         self.participants = []
         self.weapons = self.load_weapons(weapons_file)
+
         self.events = self.load_events(events_file)
         self.available_events = self.events.copy()
-        self.event_probability = event_probability
-        self.battle_log = []
+
+        self.questions = questions_file
+        self.available_questions = self.questions.copy()
+        self.active_question = None
+
         self.max_participants = max_participants
+        self.event_probability = event_probability
+
+        self.battle_log = []
         self.lock = asyncio.Lock()
 
     def load_weapons(self, file_path):
@@ -248,11 +313,18 @@ class BattleRoyaleGame:
             return None
 
         fighter1, fighter2 = random.sample(self.participants, 2)
-        weapon1 = random.choice(self.weapons)
-        weapon2 = random.choice(self.weapons)
 
-        fighter1.assign_weapon(weapon1)
-        fighter2.assign_weapon(weapon2)
+        if not fighter1.permanent_weapon:
+            weapon1 = random.choice(self.weapons)
+            fighter1.assign_weapon(weapon1)
+        else:
+            weapon1 = fighter1.weapon
+
+        if not fighter2.permanent_weapon:
+            weapon2 = random.choice(self.weapons)
+            fighter2.assign_weapon(weapon2)
+        else:
+            weapon2 = fighter2.weapon
 
         fighter1_bonus = fighter1.bonus
         fighter2_bonus = fighter2.bonus
@@ -262,12 +334,12 @@ class BattleRoyaleGame:
 
         if roll1 > roll2:
             self.record_battle(fighter1, fighter2, roll1)
-            return (fighter1.name, weapon1, roll1, fighter1_bonus), (fighter2.name, weapon2, roll2, fighter2_bonus)
+            return 0, (fighter1.name, weapon1, roll1, fighter1_bonus), (fighter2.name, weapon2, roll2, fighter2_bonus)
         elif roll2 > roll1:
             self.record_battle(fighter2, fighter1, roll2)
-            return (fighter2.name, weapon2, roll2, fighter2_bonus), (fighter1.name, weapon1, roll1, fighter1_bonus)
+            return 1, (fighter2.name, weapon2, roll2, fighter2_bonus), (fighter1.name, weapon1, roll1, fighter1_bonus)
         else:
-            return None
+            return 2, (fighter1.name, weapon1, roll1, fighter1_bonus), (fighter2.name, weapon2, roll2, fighter2_bonus)
         
     def simulate_event(self):
         """
@@ -291,6 +363,23 @@ class BattleRoyaleGame:
                 return name, message
 
         return None
+
+    def roll_for_question(self):
+        """
+        Rolls to determine if a question should be asked.
+
+        Returns:
+            bool: True if a question is selected, False otherwise.
+        """
+        if not self.available_questions:
+            self.available_questions = self.questions.copy()
+            
+        if random.randint(1, 100) <= self.event_probability / 5:
+            self.active_question = random.choice(self.available_questions)
+            return True
+        else:
+            self.active_question = None
+            return False
 
     def record_battle(self, winner, loser, damage):
         """
@@ -317,10 +406,10 @@ class BattleRoyaleGame:
 
     def get_stats(self):
         """
-        Returns statistics of the battles, including kills and best hits.
+        Returns statistics of the top 5 participants, including kills and best hits.
 
         Returns:
-            dict: A dictionary where keys are participant names and values are their stats.
+            dict: A dictionary where keys are the top 5 participant names and values are their stats.
         """
         stats = {}
         for winner, loser, damage in self.battle_log:
@@ -328,4 +417,18 @@ class BattleRoyaleGame:
                 stats[winner] = {'kills': 0, 'best_hit': 0}
             stats[winner]['kills'] += 1
             stats[winner]['best_hit'] = max(stats[winner]['best_hit'], damage)
-        return stats
+
+        participants = [entry[0] for entry in self.battle_log[::-1]]
+        top_5_participants = []
+        seen = set()
+
+        for participant in participants:
+            if participant not in seen:
+                top_5_participants.append(participant)
+                seen.add(participant)
+            if len(top_5_participants) == 5:
+                break
+
+        top_5_stats = {participant: stats[participant] for participant in top_5_participants if participant in stats}
+
+        return top_5_stats
