@@ -1,5 +1,4 @@
-#Sample username for !autofill and sample questions list
-from ttv_battleroyale.battleroyale_logic import Question
+#Sample username for !autofill
 
 sample_usernames = [
     "cool_cat42",

@@ -2,4 +2,5 @@
 __pycache__/
 .vscode/
 ttv_battleroyale/zeling_game_assets.py
+ttv_battleroyale/game_assets/zeling_set
 docs_rst/
