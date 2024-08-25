@@ -3,17 +3,12 @@ import asyncio
 import json
 
 class Weapon:
-    """
-    Represents a weapon in the Battle Royale game.
-
-    Attributes:
-        name (str): The name of the weapon.
-        dice (int): The type of dice used to determine damage (e.g., 6 for d6, 8 for d8).ss
+    """Represents a weapon in the Battle Royale game.
     """
 
     def __init__(self, name, dice):
         """
-        Initializes a new weapon with a name and a dice type.
+        Initialize a new weapon with a name and a dice type.
 
         Args:
             name (str): The name of the weapon.
@@ -24,7 +19,7 @@ class Weapon:
 
     def roll_damage(self):
         """
-        Rolls the dice to determine the base damage.
+        Roll the dice to determine the base damage.
 
         Returns:
             int: The damage rolled with the weapon's dice.
@@ -32,27 +27,33 @@ class Weapon:
         return random.randint(1, self.dice)
     
 class Event:
+    """Represents an event that occurs between rounds."""
+
     def __init__(self, name, damage_bonus, messages):
         """
-        Base class representing an event that occurs between rounds.
+        Initialize an event.
 
-        :param name: Name of the event.
-        :param damage_bonus: Damage bonus provided by the event.
-        :param messages: List of messages that represent the event when activated.
+        Args:
+            name (str): Name of the event.
+            damage_bonus (int): Damage bonus provided by the event.
+            messages (list): List of messages that represent the event when activated.
         """
         self.name = name
         self.damage_bonus = damage_bonus
-        self.permanent_bonus = False
-        self.activated = False
+        self.is_permanent_bonus = False
+        self.is_activated = False
         self.affected_users = []
         self.messages = messages
 
     def select_participant(self, participants):
         """
-        Selects a random participant from the list of participants.
+        Select a random participant from the list of participants.
 
-        :param participants: List of participants.
-        :return: A randomly selected participant.
+        Args:
+            participants (list): List of participants.
+
+        Returns:
+            Participant: A randomly selected participant.
         """
         if participants:
             selected = random.choice(participants)
@@ -62,72 +63,60 @@ class Event:
 
     def activate_event(self, participants):
         """
-        Activates the event, selects a participant with a bonus of 0, and applies the effect.
+        Activate the event, select a participant with a bonus of 0, and apply the effect.
 
-        :param participants: List of participants.
-        :return: Message from the activated event.
+        Args:
+            participants (list): List of participants.
+
+        Returns:
+            tuple: Affected participant, event title, message, bonus, and permanence flag.
         """
-        if not self.activated:
+        if not self.is_activated:
             eligible_participants = [p for p in participants if p.bonus == 0]
             
             if eligible_participants:
                 affected = self.select_participant(eligible_participants)
                 if affected:
-                    self.activated = False
-                    message = random.choice(self.messages).format(affected.name) + " BONUS: " + str(self.damage_bonus)
-                    bonus = self.damage_bonus
-                    permanent = self.permanent_bonus
-                    event_title = self.name
-                    return affected, event_title, message, bonus, permanent
-            else:
-                return None
+                    self.is_activated = False
+                    message = random.choice(self.messages).format(affected.name) + f" BONUS: {self.damage_bonus}"
+                    return affected, self.name, message, self.damage_bonus, self.is_permanent_bonus
         
         return None
 
     def reset_event(self):
-        """
-        Resets the event's state so it can be activated again.
-        """
-        self.activated = False
+        """Reset the event's state so it can be activated again."""
+        self.is_activated = False
         self.affected_users = []
 
 class Participant:
-    """
-    Represents a participant in the Battle Royale game.
-
-    Attributes:
-        name (str): The name of the participant.
-        weapon (Weapon): The weapon assigned to the participant, or None if no weapon is assigned.s
-        bonus (int): The bonus to apply when battling
-        permanent_bonus (bool): Indicates if the current bonus is permanent
+    """Represents a participant in the Battle Royale game.
     """
 
     def __init__(self, name):
-        """
-        Initializes a new participant with a name and no weapon.
 
+        """ Initialize a new participant with a name and no weapon.
         Args:
             name (str): The name of the participant.
         """
         self.name = name
         self.weapon = None
-        self.permanent_weapon = False
+        self.has_permanent_weapon = False
         self.bonus = 0
         self.permanent_bonus = 0
 
     def assign_weapon(self, weapon):
         """
-        Assigns a weapon to the participant if they don't already have one.
+        Assign a weapon to the participant if they don't already have a permanent one.
 
         Args:
             weapon (Weapon): The weapon to assign to the participant.
         """
-        if not self.permanent_weapon:
+        if not self.has_permanent_weapon:
             self.weapon = weapon
 
     def roll_damage(self):
         """
-        Rolls the damage using the assigned weapon and applies the current bonus. Resets their bonus if not permanent
+        Roll the damage using the assigned weapon and apply the current bonus.
 
         Returns:
             int: The total damage rolled, including any bonuses.
@@ -140,17 +129,21 @@ class Participant:
         return final_damage
 
 class Question:
+
+    """Represents a question in the Battle Royale game.
+    """
     def __init__(self, question, answer, correct_message, prize, is_permanent):
         """
-        Initializes a riddle for the game.
+        Initialize a question for the game.
 
         Args:
-            question (str): The riddle's question.
-            answer (str): The correct answer to the riddle.
-            correct_message (str): The message to display when the answer is correct, including any bonus or prize information.
-            prize (str or int): The prize awarded for answering correctly. Can be a numeric bonus or the name of a weapon.
+            question (str): The question text.
+            answer (str): The correct answer to the question.
+            correct_message (str): The message to display when the answer is correct.
+            prize (str or int): The prize awarded for answering correctly.
             is_permanent (bool): Flag indicating if the prize is permanent or temporary.
         """
+
         self.question = question
         self.answer = answer
         self.correct_message = correct_message
@@ -159,7 +152,7 @@ class Question:
 
     def check_answer(self, given_answer):
         """
-        Checks if the provided answer is correct.
+        Check if the provided answer is correct.
 
         Args:
             given_answer (str): The answer provided by the player.
@@ -171,23 +164,22 @@ class Question:
 
     def get_prize(self):
         """
-        Returns the prize information, converting it to a numeric bonus if applicable.
+        Get the prize information.
 
         Returns:
             tuple: A tuple containing the prize (int or str) and a boolean indicating if it is permanent.
         """
         try:
-            # Try converting prize to integer (bonus)
             prize_value = int(self.prize)
         except ValueError:
-            # If conversion fails, prize is a weapon name (str)
             prize_value = self.prize
         
         return prize_value, self.is_permanent
 
     def get_correct_message(self):
+
         """
-        Returns the correct message including the prize information.
+        Get the correct message including the prize information.
 
         Returns:
             str: The message indicating the prize and whether it is permanent or not.
@@ -199,80 +191,78 @@ class Question:
         return f"{self.correct_message} {prize_info}"
 
 class BattleRoyaleGame:
-    """
-    Manages the Battle Royale game, including participants and battle simulation.
-
-    Attributes:
-        participants (list): A list of current participants in the game.
-        battle_log (list): A log of battles that have taken place.
-        max_participants (int): The maximum number of participants allowed in the game.
-        lock (asyncio.Lock): A lock to ensure thread-safe access to participants.
+    """Manages the Battle Royale game, including participants and battle simulation.
     """
 
     def __init__(self, weapons_file, events_file, questions_file, max_participants=30, event_probability=50):
         """
-        Initializes the Battle Royale game.
+        Initialize the Battle Royale game.
 
         Args:
-            weapons_file (str): The path to the JSON file containing weapon data.
-            events_file (str): The path to the JSON file containing event data.
-            max_participants (int, optional): The maximum number of participants allowed in the game. Defaults to 30.
-            event_probability (int, optional): The probability (in percentage) of an event occurring during the game. Defaults to 50.
+            weapons_file (str): Path to the JSON file containing weapon data.
+            events_file (str): Path to the JSON file containing event data.
+            questions_file (str): Path to the JSON file containing question data.
+            max_participants (int): Maximum number of participants allowed. Defaults to 30.
+            event_probability (int): Probability of an event occurring (%). Defaults to 50.
         """
         self.participants = []
-        self.weapons = self.load_weapons(weapons_file)
-
-        self.events = self.load_events(events_file)
+        self.weapons = self._load_weapons(weapons_file)
+        self.events = self._load_events(events_file)
         self.available_events = self.events.copy()
-
-        self.questions = self.load_questions(questions_file)
+        self.questions = self._load_questions(questions_file)
         self.available_questions = self.questions.copy()
         self.active_question = None
-
         self.active_challenger = None
-
         self.max_participants = max_participants
         self.event_probability = event_probability
-
-        self.battle_log = []
+        self.battle_history = []
         self.lock = asyncio.Lock()
 
-    def load_weapons(self, file_path):
-        weapons = []
-        with open(file_path, 'r') as f:
-            data = json.load(f)
-            for item in data:
-                weapon = Weapon(name=item['name'], dice=item['dice'])
-                weapons.append(weapon)
-        return weapons
+    @staticmethod
+    def _load_weapons(file_path):
+        """Load weapons from a JSON file.
 
-    def load_events(self, file_path):
-        events = []
+        Args:
+            file_path (str): Path to the JSON file containing weapon data.
+
+        Returns:
+            list: List of Weapon objects."""
         with open(file_path, 'r') as f:
             data = json.load(f)
-            for item in data:
-                event = Event(name=item['name'], 
-                              damage_bonus=item['damage_bonus'], 
-                              messages=item['messages'])
-                events.append(event)
-        return events
-    
-    def load_questions(self, file_path):
-        questions = []
+        return [Weapon(item['name'], item['dice']) for item in data]
+
+    @staticmethod
+    def _load_events(file_path):
+
+        """ Load events from a JSON file.
+            Args:
+                file_path (str): Path to the JSON file containing event data.
+            Returns:
+                list: List of Event objects.
+        """
+
         with open(file_path, 'r') as f:
             data = json.load(f)
-            for item in data:
-                question = Question(question=item['question'], 
-                                    answer=item['answer'], 
-                                    correct_message=item['correct_message'], 
-                                    prize=item['prize'], 
-                                    is_permanent=item['is_permanent'])
-                questions.append(question)
-        return questions
+        return [Event(item['name'], item['damage_bonus'], item['messages']) for item in data]
+
+    @staticmethod
+    def _load_questions(file_path):
+        """
+        Load questions from a JSON file.
+
+        Args:
+            file_path (str): Path to the JSON file containing question data.
+
+        Returns:
+            list: List of Question objects.
+        """
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+        return [Question(item['question'], item['answer'], item['correct_message'], item['prize'], item['is_permanent']) for item in data]
 
     async def add_participant(self, participant_name):
         """
-        Adds a new participant to the game, ensuring no duplicates and within the limit.
+        Add a new participant to the game.
 
         Args:
             participant_name (str): The name of the participant to add.
@@ -288,9 +278,9 @@ class BattleRoyaleGame:
             self.participants.append(Participant(participant_name))
             return True
 
-    def get_participant_byname(self, name):
+    def get_participant_by_name(self, name):
         """
-        Retrieves a participant by name from the list of participants.
+        Retrieve a participant by name from the list of participants.
 
         Args:
             name (str): The name of the participant to retrieve.
@@ -298,26 +288,23 @@ class BattleRoyaleGame:
         Returns:
             Participant: The participant with the given name, or None if not found.
         """
-        for participant in self.participants:
-            if participant.name == name:
-                return participant
-        return None
+        return next((p for p in self.participants if p.name == name), None)
 
     async def wipe(self):
         """
-        Clears the list of participants and the battle log.
+        Clear the list of participants and the battle history.
 
         Returns:
             bool: True when the wipe is complete.
         """
         async with self.lock:
             self.participants.clear()
-            self.battle_log.clear()
+            self.battle_history.clear()
             return True
 
     def is_full(self):
         """
-        Checks if the maximum number of participants has been reached.
+        Check if the maximum number of participants has been reached.
 
         Returns:
             bool: True if the game is full, False otherwise.
@@ -326,55 +313,48 @@ class BattleRoyaleGame:
 
     def is_ready_to_start(self):
         """
-        Checks if there are enough participants to start the game.
+        Check if there are enough participants to start the game.
 
         Returns:
             bool: True if the game can start, False otherwise.
         """
         return len(self.participants) > 1
 
-    def simulate_battle(self, challenge_fight=False, challenge_target=None):
+    def conduct_battle(self, challenge_fight=False, challenge_target=None):
         """
-        Simulates a battle between two random participants or between a challenger and a target.
+        Simulate a battle between two participants.
 
         Args:
-            challenge_fight (bool): Whether the battle is a challenge fight.
-            challenge_target (Participant): The target participant for the challenge fight.
+            challenge_fight (bool): Whether this is a challenge fight.
+            challenge_target (Participant): The target participant for a challenge fight.
 
         Returns:
-            tuple: A tuple containing the result and details of the battle.
+            tuple: Battle result and details.
         """
         if len(self.participants) < 2 and not challenge_fight:
             return None
 
-        #FIGHTERS SELECTION
-        if challenge_fight:
-            fighter1, fighter2 = self.active_challenger, challenge_target
-        else:
-            fighter1, fighter2 = random.sample(self.participants, 2)
+        fighter1, fighter2 = (self.active_challenger, challenge_target) if challenge_fight else random.sample(self.participants, 2)
 
-        #RANDOM WEAPON ASSIGNMENT TO NON-PERMANENT WEAPON FIGHTERS
-        weapon1 = fighter1.weapon if fighter1.permanent_weapon else self.assign_random_weapon(fighter1)
-        weapon2 = fighter2.weapon if fighter2.permanent_weapon else self.assign_random_weapon(fighter2)
+        weapon1 = fighter1.weapon if fighter1.has_permanent_weapon else self._assign_random_weapon(fighter1)
+        weapon2 = fighter2.weapon if fighter2.has_permanent_weapon else self._assign_random_weapon(fighter2)
 
-        #STORE FINAL BONUS AND ROLL FOR DAMAGE
         fighter1_bonus = fighter1.bonus + fighter1.permanent_bonus
         fighter2_bonus = fighter2.bonus + fighter2.permanent_bonus
         roll1, roll2 = fighter1.roll_damage(), fighter2.roll_damage()
 
-        #DETERMINE WHO IS THE WINNER. "2" MEANS TIE. SORRY, I'LL THINK SOMETHING BETTER FOR THIS :(
         if roll1 > roll2:
-            self.record_battle(fighter1, fighter2, roll1)
+            self._record_battle(fighter1, fighter2, roll1)
             return 0, (fighter1.name, weapon1, roll1, fighter1_bonus), (fighter2.name, weapon2, roll2, fighter2_bonus)
         elif roll2 > roll1:
-            self.record_battle(fighter2, fighter1, roll2)
+            self._record_battle(fighter2, fighter1, roll2)
             return 1, (fighter2.name, weapon2, roll2, fighter2_bonus), (fighter1.name, weapon1, roll1, fighter1_bonus)
         else:
             return 2, (fighter1.name, weapon1, roll1, fighter1_bonus), (fighter2.name, weapon2, roll2, fighter2_bonus)
 
-    def assign_random_weapon(self, fighter):
+    def _assign_random_weapon(self, fighter):
         """
-        Assigns a random weapon to a fighter and updates their weapon attribute.
+        Assign a random weapon to a fighter.
 
         Args:
             fighter (Participant): The participant to assign a weapon to.
@@ -385,12 +365,13 @@ class BattleRoyaleGame:
         weapon = random.choice(self.weapons)
         fighter.assign_weapon(weapon)
         return weapon
-        
+
     def simulate_event(self):
         """
-        Triggers a random event from the collection based on the given probability
-        
-        :return: Mensaje del evento o None si no se activó ningún evento.
+        Trigger a random event from the collection based on the given probability.
+
+        Returns:
+            tuple: Event title and message, or None if no event was triggered.
         """
         if not self.available_events:
             self.available_events = self.events.copy()
@@ -400,11 +381,11 @@ class BattleRoyaleGame:
             event_result = current_event.activate_event(self.participants)
             
             if event_result:
-                afectado, name, message, bonus, permanent = event_result
+                affected, name, message, bonus, permanent = event_result
                 if permanent:
-                    afectado.permanent_bonus += bonus
+                    affected.permanent_bonus += bonus
                 else:
-                    afectado.bonus += bonus
+                    affected.bonus += bonus
                 
                 self.available_events.remove(current_event)
                 
@@ -414,7 +395,7 @@ class BattleRoyaleGame:
 
     def roll_for_question(self):
         """
-        Rolls to determine if a question should be asked.
+        Roll to determine if a question should be asked.
 
         Returns:
             bool: True if a question is selected, False otherwise.
@@ -426,26 +407,24 @@ class BattleRoyaleGame:
             self.active_question = random.choice(self.available_questions)
             self.available_questions.remove(self.active_question)
             return True
-        else:
-            return False
+        return False
 
     def roll_for_challenge(self):
         """
-        Rolls to determine if a player is now the challenger.
+        Roll to determine if a player becomes the challenger.
 
         Returns:
-            Object: Challenger participant, None otherwise.
+            Participant: The challenger participant, or None.
         """
         if not self.active_challenger:
             if random.randint(1, 100) <= self.event_probability / 5:
                 self.active_challenger = random.choice(self.participants)
                 return self.active_challenger     
-        else:
-            return False
+        return None
 
-    def record_battle(self, winner, loser, damage):
+    def _record_battle(self, winner, loser, damage):
         """
-        Records the result of a battle and removes the loser from the participant list.
+        Record the result of a battle and remove the loser from the participant list.
 
         Args:
             winner (Participant): The participant who won the battle.
@@ -453,34 +432,32 @@ class BattleRoyaleGame:
             damage (int): The amount of damage dealt in the battle.
         """
         self.participants.remove(loser)
-        self.battle_log.append((winner.name, loser.name, damage))
+        self.battle_history.append((winner.name, loser.name, damage))
 
     def get_winner(self):
         """
-        Returns the winner of the game if there is only one participant left.
+        Get the winner of the game if there is only one participant left.
 
         Returns:
             str or None: The name of the winner, or None if the game is not over.
         """
-        if len(self.participants) == 1:
-            return self.participants[0].name
-        return None
+        return self.participants[0].name if len(self.participants) == 1 else None
 
     def get_stats(self):
         """
-        Returns statistics of the top 5 participants, including kills and best hits.
+        Get statistics of the top 5 participants, including kills and best hits.
 
         Returns:
             dict: A dictionary where keys are the top 5 participant names and values are their stats.
         """
         stats = {}
-        for winner, loser, damage in self.battle_log:
+        for winner, loser, damage in self.battle_history:
             if winner not in stats:
                 stats[winner] = {'kills': 0, 'best_hit': 0}
             stats[winner]['kills'] += 1
             stats[winner]['best_hit'] = max(stats[winner]['best_hit'], damage)
 
-        participants = [entry[0] for entry in self.battle_log[::-1]]
+        participants = [entry[0] for entry in self.battle_history[::-1]]
         top_5_participants = []
         seen = set()
 
@@ -491,6 +468,4 @@ class BattleRoyaleGame:
             if len(top_5_participants) == 5:
                 break
 
-        top_5_stats = {participant: stats[participant] for participant in top_5_participants if participant in stats}
-
-        return top_5_stats
+        return {participant: stats[participant] for participant in top_5_participants if participant in stats}
