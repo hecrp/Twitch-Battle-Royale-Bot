@@ -246,7 +246,7 @@ class BattleRoyaleBot(commands.Bot):
             f"RESULT: {winner} rolled a total of {roll1} damage and killed {loser} ({roll2} damage)! "
             if whowin in [0, 1] else 
             f"TIE!! Both players dealt {roll1} damage. They almost killed each other... The battle is fierce!"
-        )
+            )
         await self.send_message(ctx, result_message)
 
     async def run_battle_royale(self, ctx):
@@ -270,11 +270,17 @@ class BattleRoyaleBot(commands.Bot):
 
     async def process_events(self, ctx):
         """Process game events."""
-        event_result = self.game.simulate_event()
-        if event_result:
-            event_title, event_message = event_result
-            await ctx.send(f"/me EVENT!! {event_title}: {event_message}")
-            await asyncio.sleep(EVENT_SLEEP)
+        while True:
+            event_result = self.game.simulate_event()
+            if event_result:
+                event_title, event_message = event_result
+                await ctx.send(f"/me EVENT!! {event_title}: {event_message}")
+                await asyncio.sleep(EVENT_SLEEP)
+                
+                # 55% chance of chained event
+                if random.random() < 0.5:
+                    continue
+            break
 
     async def process_challenge(self, ctx):
         """Process challenge events."""
