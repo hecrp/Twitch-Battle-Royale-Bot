@@ -8,9 +8,9 @@ from sample_game_assets import sample_usernames
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-TOKEN = 'TOKEN'
-CHANNEL = 'CHANNEL'
-ADMIN = 'ADMIN'
+TOKEN = 'px3b2h6syn7a2sv53ttdct4w4z9dc8'
+CHANNEL = 'hector_laterceraverdunch'
+ADMIN = 'hector_laterceraverdunch'
 
 # Game assets
 WEAPONS = 'game_assets/cosmic_horror_set/weapons.json'
@@ -246,7 +246,7 @@ class BattleRoyaleBot(commands.Bot):
             f"RESULT: {winner} rolled a total of {roll1} damage and killed {loser} ({roll2} damage)! "
             if whowin in [0, 1] else 
             f"TIE!! Both players dealt {roll1} damage. They almost killed each other... The battle is fierce!"
-        )
+            )
         await self.send_message(ctx, result_message)
 
     async def run_battle_royale(self, ctx):
@@ -270,11 +270,17 @@ class BattleRoyaleBot(commands.Bot):
 
     async def process_events(self, ctx):
         """Process game events."""
-        event_result = self.game.simulate_event()
-        if event_result:
-            event_title, event_message = event_result
-            await ctx.send(f"/me EVENT!! {event_title}: {event_message}")
-            await asyncio.sleep(EVENT_SLEEP)
+        while True:
+            event_result = self.game.simulate_event()
+            if event_result:
+                event_title, event_message = event_result
+                await ctx.send(f"/me EVENT!! {event_title}: {event_message}")
+                await asyncio.sleep(EVENT_SLEEP)
+                
+                # 55% chance of chained event
+                if random.random() < 0.5:
+                    continue
+            break
 
     async def process_challenge(self, ctx):
         """Process challenge events."""
