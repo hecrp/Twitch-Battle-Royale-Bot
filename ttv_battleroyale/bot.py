@@ -8,9 +8,9 @@ from sample_game_assets import sample_usernames
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-TOKEN = 'px3b2h6syn7a2sv53ttdct4w4z9dc8'
-CHANNEL = 'hector_laterceraverdunch'
-ADMIN = 'hector_laterceraverdunch'
+TOKEN = 'TOKEN'
+CHANNEL = 'CHANNEL'
+ADMIN = 'ADMIN'
 
 # Game assets
 WEAPONS = 'game_assets/cosmic_horror_set/weapons.json'
