@@ -43,8 +43,8 @@ class BattleRoyaleBot(commands.Bot):
         """
         Handle incoming Twitch chat messages.
 
-        Args:
-            message (twitchio.Message): The message object containing content and metadata.
+        :param message: The message object containing content and metadata.
+        :type message: twitchio.Message
         """
         if message.author is None:
             print("Received message from an unknown source, skipping...")
@@ -55,9 +55,10 @@ class BattleRoyaleBot(commands.Bot):
         """
         Send a message to the Twitch chat.
 
-        Args:
-            ctx (twitchio.Context): The context object representing the current chat context.
-            content (str): The message content to be sent to the chat.
+        :param ctx: The context object representing the current chat context.
+        :type ctx: twitchio.Context
+        :param content: The message content to be sent to the chat.
+        :type content: str
         """
         await ctx.send(content)
 
@@ -110,9 +111,10 @@ class BattleRoyaleBot(commands.Bot):
         """
         Expand the maximum number of participants by a given number.
 
-        Args:
-            ctx (twitchio.Context): The context object representing the current chat context.
-            num (int): The number of slots to add to the maximum participants.
+        :param ctx: The context object representing the current chat context.
+        :type ctx: twitchio.Context
+        :param num: The number of slots to add to the maximum participants.
+        :type num: int
         """
         if ctx.author.name.lower() != ADMIN.lower():
             await ctx.send('This command can only be used by the administrator.')
@@ -166,7 +168,14 @@ class BattleRoyaleBot(commands.Bot):
 
     @commands.command(name="answer")
     async def process_answer(self, ctx, user_answer: str):
-        """Process a user's answer to the active question."""
+        """
+        Process a user's answer to the active question.
+
+        :param ctx: The context object representing the current chat context.
+        :type ctx: twitchio.Context
+        :param user_answer: The answer provided by the user.
+        :type user_answer: str
+        """
         if self.game.active_question:
             question = self.game.active_question
             
@@ -194,7 +203,14 @@ class BattleRoyaleBot(commands.Bot):
 
     @commands.command(name="challenge")
     async def process_challenge(self, ctx, target_user: str):
-        """Process a challenge from one user to another."""
+        """
+        Process a challenge from one user to another.
+
+        :param ctx: The context object representing the current chat context.
+        :type ctx: twitchio.Context
+        :param target_user: The name of the user being challenged.
+        :type target_user: str
+        """
         if not self.is_paused and self.game.active_challenger and ctx.author.name.lower() == self.game.active_challenger.name.lower():
             target = next((p for p in self.game.participants if p.name.lower() == target_user.lower()), None)
             if target:
@@ -230,7 +246,14 @@ class BattleRoyaleBot(commands.Bot):
             await ctx.send("/me Only an admin can resume the game.")
 
     async def post_battle_result(self, ctx, battle_result):
-        """Post the result of a battle to the chat."""
+        """
+        Post the result of a battle to the chat.
+
+        :param ctx: The context object representing the current chat context.
+        :type ctx: twitchio.Context
+        :param battle_result: The result of the battle.
+        :type battle_result: tuple
+        """
         whowin, (winner, weapon1, roll1, bonus1), (loser, weapon2, roll2, bonus2) = battle_result
         
         battle_message = (
@@ -277,7 +300,7 @@ class BattleRoyaleBot(commands.Bot):
                 await ctx.send(f"/me EVENT!! {event_title}: {event_message}")
                 await asyncio.sleep(EVENT_SLEEP)
                 
-                # 55% chance of chained event
+                # 55% of chained event
                 if random.random() < 0.5:
                     continue
             break

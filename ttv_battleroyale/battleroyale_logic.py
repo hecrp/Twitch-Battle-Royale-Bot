@@ -3,16 +3,16 @@ import asyncio
 import json
 
 class Weapon:
-    """Represents a weapon in the Battle Royale game.
-    """
+    """Represents a weapon in the Battle Royale game."""
 
     def __init__(self, name, dice):
         """
         Initialize a new weapon with a name and a dice type.
 
-        Args:
-            name (str): The name of the weapon.
-            dice (int): The dice type used for rolling damage.
+        :param name: The name of the weapon.
+        :type name: str
+        :param dice: The dice type used for rolling damage.
+        :type dice: int
         """
         self.name = name
         self.dice = dice
@@ -21,8 +21,8 @@ class Weapon:
         """
         Roll the dice to determine the base damage.
 
-        Returns:
-            int: The damage rolled with the weapon's dice.
+        :return: The damage rolled with the weapon's dice.
+        :rtype: int
         """
         return random.randint(1, self.dice)
     
@@ -33,10 +33,12 @@ class Event:
         """
         Initialize an event.
 
-        Args:
-            name (str): Name of the event.
-            damage_bonus (int): Damage bonus provided by the event.
-            messages (list): List of messages that represent the event when activated.
+        :param name: Name of the event.
+        :type name: str
+        :param damage_bonus: Damage bonus provided by the event.
+        :type damage_bonus: int
+        :param messages: List of messages that represent the event when activated.
+        :type messages: list
         """
         self.name = name
         self.damage_bonus = damage_bonus
@@ -49,11 +51,10 @@ class Event:
         """
         Select a random participant from the list of participants.
 
-        Args:
-            participants (list): List of participants.
-
-        Returns:
-            Participant: A randomly selected participant.
+        :param participants: List of participants.
+        :type participants: list
+        :return: A randomly selected participant.
+        :rtype: Participant or None
         """
         if participants:
             selected = random.choice(participants)
@@ -65,11 +66,10 @@ class Event:
         """
         Activate the event, select a participant with a bonus of 0, and apply the effect.
 
-        Args:
-            participants (list): List of participants.
-
-        Returns:
-            tuple: Affected participant, event title, message, bonus, and permanence flag.
+        :param participants: List of participants.
+        :type participants: list
+        :return: Tuple containing affected participant, event title, message, bonus, and permanence flag.
+        :rtype: tuple or None
         """
         if not self.is_activated:
             eligible_participants = [p for p in participants if p.bonus == 0]
@@ -89,14 +89,14 @@ class Event:
         self.affected_users = []
 
 class Participant:
-    """Represents a participant in the Battle Royale game.
-    """
+    """Represents a participant in the Battle Royale game."""
 
     def __init__(self, name):
+        """
+        Initialize a new participant with a name and no weapon.
 
-        """ Initialize a new participant with a name and no weapon.
-        Args:
-            name (str): The name of the participant.
+        :param name: The name of the participant.
+        :type name: str
         """
         self.name = name
         self.weapon = None
@@ -108,8 +108,8 @@ class Participant:
         """
         Assign a weapon to the participant if they don't already have a permanent one.
 
-        Args:
-            weapon (Weapon): The weapon to assign to the participant.
+        :param weapon: The weapon to assign to the participant.
+        :type weapon: Weapon
         """
         if not self.has_permanent_weapon:
             self.weapon = weapon
@@ -118,8 +118,8 @@ class Participant:
         """
         Roll the damage using the assigned weapon and apply the current bonus.
 
-        Returns:
-            int: The total damage rolled, including any bonuses.
+        :return: The total damage rolled, including any bonuses.
+        :rtype: int
         """
         if not self.weapon:
             return 0 
@@ -129,21 +129,23 @@ class Participant:
         return final_damage
 
 class Question:
+    """Represents a question in the Battle Royale game."""
 
-    """Represents a question in the Battle Royale game.
-    """
     def __init__(self, question, answer, correct_message, prize, is_permanent):
         """
         Initialize a question for the game.
 
-        Args:
-            question (str): The question text.
-            answer (str): The correct answer to the question.
-            correct_message (str): The message to display when the answer is correct.
-            prize (str or int): The prize awarded for answering correctly.
-            is_permanent (bool): Flag indicating if the prize is permanent or temporary.
+        :param question: The question text.
+        :type question: str
+        :param answer: The correct answer to the question.
+        :type answer: str
+        :param correct_message: The message to display when the answer is correct.
+        :type correct_message: str
+        :param prize: The prize awarded for answering correctly.
+        :type prize: str or int
+        :param is_permanent: Flag indicating if the prize is permanent or temporary.
+        :type is_permanent: bool
         """
-
         self.question = question
         self.answer = answer
         self.correct_message = correct_message
@@ -154,11 +156,10 @@ class Question:
         """
         Check if the provided answer is correct.
 
-        Args:
-            given_answer (str): The answer provided by the player.
-
-        Returns:
-            bool: True if the answer is correct, False otherwise.
+        :param given_answer: The answer provided by the player.
+        :type given_answer: str
+        :return: True if the answer is correct, False otherwise.
+        :rtype: bool
         """
         return given_answer.strip().lower() == self.answer.strip().lower()
 
@@ -166,8 +167,8 @@ class Question:
         """
         Get the prize information.
 
-        Returns:
-            tuple: A tuple containing the prize (int or str) and a boolean indicating if it is permanent.
+        :return: A tuple containing the prize (int or str) and a boolean indicating if it is permanent.
+        :rtype: tuple
         """
         try:
             prize_value = int(self.prize)
@@ -177,12 +178,11 @@ class Question:
         return prize_value, self.is_permanent
 
     def get_correct_message(self):
-
         """
         Get the correct message including the prize information.
 
-        Returns:
-            str: The message indicating the prize and whether it is permanent or not.
+        :return: The message indicating the prize and whether it is permanent or not.
+        :rtype: str
         """
         prize_info = f"Prize: {self.prize}"
         if self.is_permanent:
@@ -191,19 +191,22 @@ class Question:
         return f"{self.correct_message} {prize_info}"
 
 class BattleRoyaleGame:
-    """Manages the Battle Royale game, including participants and battle simulation.
-    """
+    """Manages the Battle Royale game, including participants and battle simulation."""
 
     def __init__(self, weapons_file, events_file, questions_file, max_participants=30, event_probability=50):
         """
         Initialize the Battle Royale game.
 
-        Args:
-            weapons_file (str): Path to the JSON file containing weapon data.
-            events_file (str): Path to the JSON file containing event data.
-            questions_file (str): Path to the JSON file containing question data.
-            max_participants (int): Maximum number of participants allowed. Defaults to 30.
-            event_probability (int): Probability of an event occurring (%). Defaults to 50.
+        :param weapons_file: Path to the JSON file containing weapon data.
+        :type weapons_file: str
+        :param events_file: Path to the JSON file containing event data.
+        :type events_file: str
+        :param questions_file: Path to the JSON file containing question data.
+        :type questions_file: str
+        :param max_participants: Maximum number of participants allowed. Defaults to 30.
+        :type max_participants: int
+        :param event_probability: Probability of an event occurring (%). Defaults to 50.
+        :type event_probability: int
         """
         self.participants = []
         self.weapons = self._load_weapons(weapons_file)
@@ -220,27 +223,28 @@ class BattleRoyaleGame:
 
     @staticmethod
     def _load_weapons(file_path):
-        """Load weapons from a JSON file.
+        """
+        Load weapons from a JSON file.
 
-        Args:
-            file_path (str): Path to the JSON file containing weapon data.
-
-        Returns:
-            list: List of Weapon objects."""
+        :param file_path: Path to the JSON file containing weapon data.
+        :type file_path: str
+        :return: List of Weapon objects.
+        :rtype: list
+        """
         with open(file_path, 'r') as f:
             data = json.load(f)
         return [Weapon(item['name'], item['dice']) for item in data]
 
     @staticmethod
     def _load_events(file_path):
-
-        """ Load events from a JSON file.
-            Args:
-                file_path (str): Path to the JSON file containing event data.
-            Returns:
-                list: List of Event objects.
         """
+        Load events from a JSON file.
 
+        :param file_path: Path to the JSON file containing event data.
+        :type file_path: str
+        :return: List of Event objects.
+        :rtype: list
+        """
         with open(file_path, 'r') as f:
             data = json.load(f)
         return [Event(item['name'], item['damage_bonus'], item['messages']) for item in data]
@@ -250,11 +254,10 @@ class BattleRoyaleGame:
         """
         Load questions from a JSON file.
 
-        Args:
-            file_path (str): Path to the JSON file containing question data.
-
-        Returns:
-            list: List of Question objects.
+        :param file_path: Path to the JSON file containing question data.
+        :type file_path: str
+        :return: List of Question objects.
+        :rtype: list
         """
         with open(file_path, 'r') as f:
             data = json.load(f)
@@ -264,11 +267,10 @@ class BattleRoyaleGame:
         """
         Add a new participant to the game.
 
-        Args:
-            participant_name (str): The name of the participant to add.
-
-        Returns:
-            bool: True if the participant was added, False otherwise.
+        :param participant_name: The name of the participant to add.
+        :type participant_name: str
+        :return: True if the participant was added, False otherwise.
+        :rtype: bool
         """
         async with self.lock:
             if any(p.name == participant_name for p in self.participants):
@@ -282,11 +284,10 @@ class BattleRoyaleGame:
         """
         Retrieve a participant by name from the list of participants.
 
-        Args:
-            name (str): The name of the participant to retrieve.
-
-        Returns:
-            Participant: The participant with the given name, or None if not found.
+        :param name: The name of the participant to retrieve.
+        :type name: str
+        :return: The participant with the given name, or None if not found.
+        :rtype: Participant or None
         """
         return next((p for p in self.participants if p.name == name), None)
 
@@ -294,8 +295,8 @@ class BattleRoyaleGame:
         """
         Clear the list of participants and the battle history.
 
-        Returns:
-            bool: True when the wipe is complete.
+        :return: True when the wipe is complete.
+        :rtype: bool
         """
         async with self.lock:
             self.participants.clear()
@@ -306,8 +307,8 @@ class BattleRoyaleGame:
         """
         Check if the maximum number of participants has been reached.
 
-        Returns:
-            bool: True if the game is full, False otherwise.
+        :return: True if the game is full, False otherwise.
+        :rtype: bool
         """
         return len(self.participants) >= self.max_participants
 
@@ -315,8 +316,8 @@ class BattleRoyaleGame:
         """
         Check if there are enough participants to start the game.
 
-        Returns:
-            bool: True if the game can start, False otherwise.
+        :return: True if the game can start, False otherwise.
+        :rtype: bool
         """
         return len(self.participants) > 1
 
@@ -324,12 +325,12 @@ class BattleRoyaleGame:
         """
         Simulate a battle between two participants.
 
-        Args:
-            challenge_fight (bool): Whether this is a challenge fight.
-            challenge_target (Participant): The target participant for a challenge fight.
-
-        Returns:
-            tuple: Battle result and details.
+        :param challenge_fight: Whether this is a challenge fight.
+        :type challenge_fight: bool
+        :param challenge_target: The target participant for a challenge fight.
+        :type challenge_target: Participant
+        :return: Battle result and details.
+        :rtype: tuple or None
         """
         if len(self.participants) < 2 and not challenge_fight:
             return None
@@ -356,11 +357,10 @@ class BattleRoyaleGame:
         """
         Assign a random weapon to a fighter.
 
-        Args:
-            fighter (Participant): The participant to assign a weapon to.
-
-        Returns:
-            Weapon: The assigned weapon.
+        :param fighter: The participant to assign a weapon to.
+        :type fighter: Participant
+        :return: The assigned weapon.
+        :rtype: Weapon
         """
         weapon = random.choice(self.weapons)
         fighter.assign_weapon(weapon)
@@ -370,8 +370,8 @@ class BattleRoyaleGame:
         """
         Trigger a random event from the collection based on the given probability.
 
-        Returns:
-            tuple: Event title and message, or None if no event was triggered.
+        :return: Event title and message, or None if no event was triggered.
+        :rtype: tuple or None
         """
         if not self.available_events:
             self.available_events = self.events.copy()
@@ -397,8 +397,8 @@ class BattleRoyaleGame:
         """
         Roll to determine if a question should be asked.
 
-        Returns:
-            bool: True if a question is selected, False otherwise.
+        :return: True if a question is selected, False otherwise.
+        :rtype: bool
         """
         if not self.available_questions:
             self.available_questions = self.questions.copy()
@@ -413,8 +413,8 @@ class BattleRoyaleGame:
         """
         Roll to determine if a player becomes the challenger.
 
-        Returns:
-            Participant: The challenger participant, or None.
+        :return: The challenger participant, or None.
+        :rtype: Participant or None
         """
         if not self.active_challenger:
             if random.randint(1, 100) <= self.event_probability / 5:
@@ -426,10 +426,12 @@ class BattleRoyaleGame:
         """
         Record the result of a battle and remove the loser from the participant list.
 
-        Args:
-            winner (Participant): The participant who won the battle.
-            loser (Participant): The participant who lost the battle.
-            damage (int): The amount of damage dealt in the battle.
+        :param winner: The participant who won the battle.
+        :type winner: Participant
+        :param loser: The participant who lost the battle.
+        :type loser: Participant
+        :param damage: The amount of damage dealt in the battle.
+        :type damage: int
         """
         self.participants.remove(loser)
         self.battle_history.append((winner.name, loser.name, damage))
@@ -438,8 +440,8 @@ class BattleRoyaleGame:
         """
         Get the winner of the game if there is only one participant left.
 
-        Returns:
-            str or None: The name of the winner, or None if the game is not over.
+        :return: The name of the winner, or None if the game is not over.
+        :rtype: str or None
         """
         return self.participants[0].name if len(self.participants) == 1 else None
 
@@ -447,8 +449,8 @@ class BattleRoyaleGame:
         """
         Get statistics of the top 5 participants, including kills and best hits.
 
-        Returns:
-            dict: A dictionary where keys are the top 5 participant names and values are their stats.
+        :return: A dictionary where keys are the top 5 participant names and values are their stats.
+        :rtype: dict
         """
         stats = {}
         for winner, loser, damage in self.battle_history:
