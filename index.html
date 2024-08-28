@@ -3,88 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twitch Battle Royale Bot - Instrucciones para Jugadores</title>
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <title style="color: white;">Twitch Battle Royale Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #9146FF;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+        h1, h2, h3 {
+            color: #9146FF;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        a {
+            color: #9146FF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #9146FF;
+            color: #fff;
+            border-radius: 5px;
+        }
+        .game-example {
+            background-color: #18181b;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: 'Roboto', Arial, sans-serif;
+            color: #efeff1;
+        }
+        .game-event {
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .player {
+            color: #00ff00;
+            font-weight: bold;
+        }
+        .bot {
+            color: #9146ff;
+            font-weight: bold;
+        }
+    </style>
 </head>
-
-<header>
-    <h1>Twitch Battle Royale Bot - Instrucciones para Jugadores</h1>
-</header>
 <body>
-    <main>
-        <section>
-            <h2>¿Qué es Twitch Battle Royale Bot?</h2>
-            <p>
-                <strong>Twitch Battle Royale Bot</strong> es un juego semi-interactivo para el chat de Twitch donde los usuarios pueden unirse a una batalla al estilo "battle royale". Cada participante se enfrentará en combates aleatorios hasta que solo quede un ganador.
-            </p>
-        </section>
+    <header>
+        <h1 style="color: white;">Twitch Battle Royale Bot</h1>
+        <p>Un juego semi-interactivo para el chat de Twitch</p>
+    </header>
 
-        <section>
-            <h2>¿Cómo Participar?</h2>
-            <p>
-                Para unirte al juego, simplemente escribe el comando <code>!join</code> en el chat de Twitch cuando el bot haya sido activado. La batalla comenzará manual o automáticamente cuando se hayan registrado suficientes participantes.
-            </p>
-        </section>
+    <div class="container">
+        <h2>Sobre el Proyecto</h2>
+        <p>Twitch Battle Royale Bot es un juego semi-interactivo para el chat de Twitch donde los usuarios pueden unirse a una batalla al estilo "battle royale". Cada participante se enfrentará en combates aleatorios hasta que solo quede un ganador.</p>
 
-        <section>
-            <h2>Explicación del Juego</h2>
-            <p>
-                Una vez empiece la partida, <strong>se sucederán eventos y combates entre dos jugadores escogidos aleatoriamente.</strong>
-            </p>
-            <p>
-                Para combatir, se asigna a los jugadores un arma aleatoria que pierden al finalizar la pelea. Cada arma tiene un tipo de dado asignado (D6, D8, D12...) dependiendo de su rareza o poder. Las mejores armas tienen asignadas mayores dados.
-            </p>
-            <p>
-                Uno o más eventos pueden ocurrir entre combates. Los eventos otorgan castigos o bonificaciones numéricas que se aplican la próxima vez que luches contra otro usuario.
-            </p>
-            <p>
-                <strong>Por tanto, ganar dependerá del arma asignada, tu suerte en las tiradas del dado y los eventos que te afecten a ti o a tu rival.</strong>
-            </p>
-            <p>
-                ¡El último en pie ganará la gloria!
-            </p>
-            
-        </section>
+        <h3>Enlaces del Proyecto</h3>
+        <ul>
+            <li><a href="https://github.com/hecrp/Twitch-Battle-Royale-Bot">Repositorio en GitHub</a></li>
+            <li><a href="https://twitch-battle-royale-bot.readthedocs.io/">Documentación en ReadTheDocs</a></li>
+        </ul>
 
-        <section>
-            <h2>Todos los Comandos Disponibles para Jugadores</h2>
-            <ul>
-                <li>
-                    <strong>!join:</strong> Regístrate en la batalla.
-                </li>
-                <li>
-                    <strong>!seats:</strong> Comprueba las plazas libres que quedan para la partida.
-                </li>
-                <li>
-                    <strong>!answer palabra:</strong> En ocasiones especiales, usa este comando para responder a una pregunta con UNA palabra.
-                </li>
-                <li>
-                    <strong>!challenge user:</strong> Si el juego te otorga la carta de desafío, usa este comando para pelear inmediatamente con otro user vivo de la partida.
-                </li>
-                <li>
-                    <strong>!stats:</strong> Muestra tu estado y estadísticas actuales en el partida. (Próximamente)
-                </li>
-                <li>
-                    <strong>!help:</strong> Envía el link de estas instrucciones en el chat. (Próximamente)
-                </li>
-            </ul>
-        </section>
+        <h3>Comandos del Bot</h3>
+        <ul>
+            <li><code>!join</code>: Regístrate en la batalla</li>
+            <li><code>!seats</code>: Comprueba las plazas libres que quedan para la partida</li>
+            <li><code>!answer palabra</code>: Responde a una pregunta con UNA palabra</li>
+            <li><code>!challenge user</code>: Desafía a otro usuario vivo de la partida</li>
+            <li><code>!stats</code>: Muestra tu estado y estadísticas actuales en la partida (Próximamente)</li>
+            <li><code>!help</code>: Envía el link de estas instrucciones en el chat (Próximamente)</li>
+        </ul>
 
-        <section>
-            <h2>Consejos para Ganar (Inútiles pero necesarios...)</h2>
-            <ul>
-                <li>Regístrate rápidamente para asegurar tu lugar en la batalla. Las plazas son limitadas.</li>
-                <li>Observa los eventos especiales, ya que pueden cambiar el curso de la batalla. Quizás te merece la pena prestar atención si quieres las mejores bonificaciones.</li>
-                <li>Diviértete y disfruta el caos de Twitch Battle Royale Bot.</li>
-            </ul>
-        </section>
-    </main>
+        <h3>Ejemplo de Juego</h3>
+        <div class="game-example">
+            <div class="game-event">
+                <span class="bot">Bot:</span> ¡La batalla ha comenzado! 10 jugadores se enfrentan por la gloria.
+            </div>
+            <div class="game-event">
+                <span class="bot">Bot:</span> EVENTO! <span class="player">Player1</span> encuentra una gema mágica. ¡Bonus +3 a su próximo combate!
+            </div>
+            <div class="game-event">
+                <span class="bot">Bot:</span> COMBATE! <span class="player">Player2</span> usando Espada Legendaria (D20) vs <span class="player">Player3</span> usando Hacha de Guerra (D10).
+            </div>
+            <div class="game-event">
+                <span class="bot">Bot:</span> RESULTADO: <span class="player">Player2</span> gana el combate con un golpe de 15 de daño.
+            </div>
+            <div class="game-event">
+                <span class="bot">Bot:</span> Pregunta: ¡Sé el primero en responder usando !answer! ¿Cómo se llama el creador de este bot?.
+            </div>
+            <div class="game-event">
+                <span class="player">Player2:</span> !answer hecrp
+            </div>
+            <div class="game-event">
+                <span class="bot">Bot:</span> ¡<span class="player">Player2</span> ha acertado! Bonus +5 (PERMANENTE).
+            </div>
+        </div>
+    </div>
 
     <footer>
-        <p>Héctor Rodríguez (hecrp). 2024 Twitch Battle Royale Bot.
-        <a href="https://github.com/hecrp/Twitch-Battle-Royale-Bot" target="_blank">Repositorio en GitHub</a> |
-        <a href="https://twitch-battle-royale-bot.readthedocs.io" target="_blank">Documentación</a>
-        </p>
+        <p>&copy; Héctor Rodríguez (hecrp). 2024 Twitch Battle Royale Bot. MIT License.</p>
     </footer>
 </body>
 </html>
