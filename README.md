@@ -6,7 +6,7 @@ Twitch Battle Royale Bot hosts a simulated battle royale between Twitch chat use
 
 Check the [documentation](https://twitch-battle-royale-bot.readthedocs.io) for more info!
 
-Game instructions in Spanish (gh-pages) [here](https://hecrp.github.io/Twitch-Battle-Royale-Bot/)
+Project description and instructions in English (gh-pages) [here](https://hecrp.github.io/Twitch-Battle-Royale-Bot/)
 
 ## Features
 
