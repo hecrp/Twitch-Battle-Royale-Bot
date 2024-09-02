@@ -5,6 +5,8 @@ from twitchio.ext import commands
 import random
 from battleroyale_logic import BattleRoyaleGame
 from sample_game_assets import sample_usernames
+from server.database import execute_query
+import json
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -22,6 +24,7 @@ EVENT_SLEEP = 5
 FIGHT_SLEEP = 1
 MAX_PARTICIPANTS = 30
 EVENT_PROBABILITY = 55
+USE_DATABASE = False
 
 class BattleRoyaleBot(commands.Bot):
     """A Twitch bot that manages and runs a Battle Royale game in the Twitch chat."""
@@ -337,6 +340,60 @@ class BattleRoyaleBot(commands.Bot):
         final_message = "\n".join(message_lines)
         
         await self.send_message(ctx, final_message)
+
+    def _record_battle(self, winner, loser, damage):
+        self.participants.remove(loser)
+        self.battle_history.append((winner.name, loser.name, damage))
+
+        if USE_DATABASE:
+            # Register the information in the database
+            execute_query("INSERT INTO users (username) VALUES (%s) ON CONFLICT (username) DO NOTHING", (winner.name,))
+            execute_query("INSERT INTO users (username) VALUES (%s) ON CONFLICT (username) DO NOTHING", (loser.name,))
+            
+            # Update winner stats
+            execute_query("""
+                UPDATE users 
+                SET kills = kills + 1, 
+                    best_hit = GREATEST(best_hit, %s),
+                    games_played = games_played + 1,
+                    wins = wins + 1
+                WHERE username = %s
+            """, (damage, winner.name))
+            
+            # Update loser stats
+            execute_query("""
+                UPDATE users 
+                SET games_played = games_played + 1
+                WHERE username = %s
+            """, (loser.name,))
+            
+            # Insert new game
+            game_id = execute_query("""
+                INSERT INTO games (winner_id, total_participants, end_time) 
+                VALUES ((SELECT id FROM users WHERE username = %s), %s, CURRENT_TIMESTAMP) 
+                RETURNING id
+            """, (winner.name, len(self.participants) + 1))
+            
+            # Insert game participants
+            execute_query("""
+                INSERT INTO game_participants (game_id, user_id, placement, damage_dealt) 
+                VALUES (%s, (SELECT id FROM users WHERE username = %s), %s, %s)
+            """, (game_id, winner.name, 1, damage))
+            
+            execute_query("""
+                INSERT INTO game_participants (game_id, user_id, placement, damage_dealt) 
+                VALUES (%s, (SELECT id FROM users WHERE username = %s), %s, %s)
+            """, (game_id, loser.name, 2, 0))  # Assuming loser dealt 0 damage
+        
+        # Register the information in a JSON file
+        battle_log = {
+            "winner": winner.name,
+            "loser": loser.name,
+            "damage": damage
+        }
+        with open('battle_log.json', 'a') as f:
+            json.dump(battle_log, f)
+            f.write('\n')
 
 if __name__ == "__main__":
     bot = BattleRoyaleBot()
