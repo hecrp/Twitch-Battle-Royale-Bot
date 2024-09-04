@@ -5,8 +5,49 @@ import plotly.express as px
 import pandas as pd
 from models import get_users, get_games, get_user_stats, get_recent_games
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+# Use a modern Bootstrap theme
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.FLATLY])
 
+# Custom CSS for additional styling
+app.index_string = '''
+<!DOCTYPE html>
+<html>
+    <head>
+        {%metas%}
+        <title>Twitch Battle Royale Dashboard</title>
+        {%favicon%}
+        {%css%}
+        <style>
+            body {
+                background-color: #f8f9fa;
+                font-family: 'Roboto', sans-serif;
+            }
+            .card {
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease-in-out;
+            }
+            .card:hover {
+                box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+                transform: translateY(-5px);
+            }
+            .table th {
+                background-color: #007bff;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        {%app_entry%}
+        <footer>
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        </footer>
+    </body>
+</html>
+'''
+
+# Color scheme
 colors = {
     'background': '#f8f9fa',
     'text': '#212529',
@@ -17,6 +58,7 @@ colors = {
     'danger': '#dc3545'
 }
 
+# Graph layout
 graph_layout = {
     'plot_bgcolor': colors['background'],
     'paper_bgcolor': colors['background'],
@@ -27,14 +69,18 @@ graph_layout = {
 }
 
 def create_header():
-    return dbc.Row([
-        dbc.Col(html.H1("Twitch Battle Royale Dashboard", className="text-center text-primary my-4"), width=12)
-    ])
+    return dbc.Card(
+        dbc.CardBody([
+            html.H1("Twitch Battle Royale Dashboard", className="text-center text-primary mb-4"),
+            html.P("Real-time statistics and game data for Twitch Battle Royale", className="text-center text-muted"),
+        ]),
+        className="mb-4"
+    )
+
 def create_graphs():
     user_stats = pd.DataFrame(get_user_stats())
     
     kills_graph = dcc.Graph(
-        id='kills-graph',
         figure=px.bar(
             user_stats.sort_values('total_kills', ascending=False),
             x='username',
@@ -46,7 +92,6 @@ def create_graphs():
     )
 
     best_hit_graph = dcc.Graph(
-        id='best-hit-graph',
         figure=px.bar(
             user_stats.sort_values('best_hit', ascending=False),
             x='username',
@@ -58,7 +103,6 @@ def create_graphs():
     )
 
     games_played_graph = dcc.Graph(
-        id='games-played-graph',
         figure=px.bar(
             user_stats.sort_values('games_played', ascending=False),
             x='username',
@@ -70,98 +114,83 @@ def create_graphs():
     )
 
     return dbc.Row([
-        dbc.Col(kills_graph, width=12, lg=4, className="mb-4"),
-        dbc.Col(best_hit_graph, width=12, lg=4, className="mb-4"),
-        dbc.Col(games_played_graph, width=12, lg=4, className="mb-4")
+        dbc.Col(dbc.Card(dbc.CardBody(kills_graph)), width=12, lg=4, className="mb-4"),
+        dbc.Col(dbc.Card(dbc.CardBody(best_hit_graph)), width=12, lg=4, className="mb-4"),
+        dbc.Col(dbc.Card(dbc.CardBody(games_played_graph)), width=12, lg=4, className="mb-4")
     ])
+
 def create_tables():
     return dbc.Row([
-        dbc.Col([
-            html.H3("User Statistics", className="text-center text-secondary mb-3", style={'font-family': 'Arial, sans-serif', 'font-weight': 'bold'}),
-            dash_table.DataTable(
-                id='user-stats-table',
-                columns=[
-                    {'name': 'Player', 'id': 'username'},
-                    {'name': 'Battles Fought', 'id': 'games_played'},
-                    {'name': 'Total Eliminations', 'id': 'total_kills'},
-                    {'name': 'Highest Damage', 'id': 'best_hit'},
-                    {'name': 'Victories', 'id': 'wins'}
-                ],
-                style_header={
-                    'backgroundColor': colors['primary'],
-                    'color': colors['background'],
-                    'fontWeight': 'bold',
-                    'font-family': 'Arial, sans-serif'
-                },
-                style_cell={
-                    'backgroundColor': colors['background'],
-                    'color': colors['text'],
-                    'border': f'1px solid {colors["secondary"]}',
-                    'font-family': 'Helvetica, sans-serif',
-                    'textAlign': 'left'
-                },
-                style_data_conditional=[
-                    {
-                        'if': {'row_index': 'odd'},
-                        'backgroundColor': '#f2f2f2'
+        dbc.Col(dbc.Card([
+            dbc.CardHeader(html.H3("User Statistics", className="text-center")),
+            dbc.CardBody(
+                dash_table.DataTable(
+                    id='user-stats-table',
+                    columns=[
+                        {'name': 'Player', 'id': 'username'},
+                        {'name': 'Battles Fought', 'id': 'games_played'},
+                        {'name': 'Total Eliminations', 'id': 'total_kills'},
+                        {'name': 'Highest Damage', 'id': 'best_hit'},
+                        {'name': 'Victories', 'id': 'wins'}
+                    ],
+                    style_header={
+                        'backgroundColor': colors['primary'],
+                        'color': 'white',
+                        'fontWeight': 'bold',
                     },
-                    {
-                        'if': {'column_id': 'total_kills'},
-                        'color': colors['danger']
+                    style_cell={
+                        'textAlign': 'left',
+                        'padding': '10px',
                     },
-                    {
-                        'if': {'column_id': 'wins'},
-                        'color': colors['success']
-                    }
-                ],
-                style_table={'overflowX': 'auto'},
-                sort_action='native',
-                filter_action='native',
-                page_action='native',
-                page_current=0,
-                page_size=10,
+                    style_data_conditional=[
+                        {
+                            'if': {'row_index': 'odd'},
+                            'backgroundColor': 'rgb(248, 248, 248)'
+                        }
+                    ],
+                    style_table={'overflowX': 'auto'},
+                    sort_action='native',
+                    filter_action='native',
+                    page_action='native',
+                    page_current=0,
+                    page_size=10,
+                )
             )
-        ], width=12, lg=6, className="mb-4"),
-        dbc.Col([
-            html.H3("Recent Games", className="text-center text-secondary mb-3", style={'font-family': 'Arial, sans-serif', 'font-weight': 'bold'}),
-            dash_table.DataTable(
-                id='recent-games-table',
-                columns=[
-                    {'name': 'Game ID', 'id': 'id'},
-                    {'name': 'Date', 'id': 'created_at'},
-                    {'name': 'Champion', 'id': 'winner'},
-                    {'name': 'Participants', 'id': 'total_participants'}
-                ],
-                style_header={
-                    'backgroundColor': colors['primary'],
-                    'color': colors['background'],
-                    'fontWeight': 'bold',
-                    'font-family': 'Arial, sans-serif'
-                },
-                style_cell={
-                    'backgroundColor': colors['background'],
-                    'color': colors['text'],
-                    'border': f'1px solid {colors["secondary"]}',
-                    'font-family': 'Helvetica, sans-serif',
-                    'textAlign': 'left'
-                },
-                style_data_conditional=[
-                    {
-                        'if': {'row_index': 'odd'},
-                        'backgroundColor': '#f2f2f2'
+        ]), width=12, lg=6, className="mb-4"),
+        dbc.Col(dbc.Card([
+            dbc.CardHeader(html.H3("Recent Games", className="text-center")),
+            dbc.CardBody(
+                dash_table.DataTable(
+                    id='recent-games-table',
+                    columns=[
+                        {'name': 'Game ID', 'id': 'id'},
+                        {'name': 'Date', 'id': 'created_at'},
+                        {'name': 'Champion', 'id': 'winner'},
+                        {'name': 'Participants', 'id': 'total_participants'}
+                    ],
+                    style_header={
+                        'backgroundColor': colors['primary'],
+                        'color': 'white',
+                        'fontWeight': 'bold',
                     },
-                    {
-                        'if': {'column_id': 'winner'},
-                        'color': colors['success']
-                    }
-                ],
-                style_table={'overflowX': 'auto'},
-                sort_action='native',
-                page_action='native',
-                page_current=0,
-                page_size=5,
+                    style_cell={
+                        'textAlign': 'left',
+                        'padding': '10px',
+                    },
+                    style_data_conditional=[
+                        {
+                            'if': {'row_index': 'odd'},
+                            'backgroundColor': 'rgb(248, 248, 248)'
+                        }
+                    ],
+                    style_table={'overflowX': 'auto'},
+                    sort_action='native',
+                    page_action='native',
+                    page_current=0,
+                    page_size=5,
+                )
             )
-        ], width=12, lg=6, className="mb-4")
+        ]), width=12, lg=6, className="mb-4")
     ])
 
 # Layout
@@ -174,62 +203,17 @@ app.layout = dbc.Container([
         interval=60*1000,  # in milliseconds
         n_intervals=0
     )
-], fluid=True, className="px-4")
+], fluid=True, className="py-4")
 
 @app.callback(
-    [dash.dependencies.Output('kills-graph', 'figure'),
-     dash.dependencies.Output('best-hit-graph', 'figure'),
-     dash.dependencies.Output('games-played-graph', 'figure'),
-     dash.dependencies.Output('user-stats-table', 'data'),
-     dash.dependencies.Output('user-stats-table', 'columns'),
-     dash.dependencies.Output('recent-games-table', 'data'),
-     dash.dependencies.Output('recent-games-table', 'columns')],
-    [dash.dependencies.Input('interval-component', 'n_intervals')]
+    [dash.Output('user-stats-table', 'data'),
+     dash.Output('recent-games-table', 'data')],
+    [dash.Input('interval-component', 'n_intervals')]
 )
 def update_dashboard(n):
-    users = get_users()
     user_stats = get_user_stats()
     recent_games = get_recent_games()
-
-    df_users = pd.DataFrame(users)
-    df_user_stats = pd.DataFrame(user_stats)
-    df_recent_games = pd.DataFrame(recent_games)
-
-    kills_fig = px.bar(df_users, x='username', y='kills', title='Kills per User')
-    kills_fig.update_layout(graph_layout)
-    kills_fig.update_traces(marker_color=colors['danger'])
-    kills_fig.update_xaxes(title_text='Username')
-    kills_fig.update_yaxes(title_text='Kills')
-
-    best_hit_fig = px.bar(df_users, x='username', y='best_hit', title='Best Hit per User')
-    best_hit_fig.update_layout(graph_layout)
-    best_hit_fig.update_traces(marker_color=colors['success'])
-    best_hit_fig.update_xaxes(title_text='Username')
-    best_hit_fig.update_yaxes(title_text='Best Hit')
-
-    games_played_fig = px.bar(df_user_stats, x='username', y='games_played', title='Games Played per User')
-    games_played_fig.update_layout(graph_layout)
-    games_played_fig.update_traces(marker_color=colors['warning'])
-    games_played_fig.update_xaxes(title_text='Username')
-    games_played_fig.update_yaxes(title_text='Games Played')
-
-    user_stats_columns = [
-        {"name": "Username", "id": "username"},
-        {"name": "Games Played", "id": "games_played"},
-        {"name": "Total Kills", "id": "total_kills"},
-        {"name": "Best Hit", "id": "best_hit"},
-        {"name": "Wins", "id": "wins"}
-    ]
-    recent_games_columns = [
-        {"name": "Game ID", "id": "id"},
-        {"name": "Created At", "id": "created_at"},
-        {"name": "Winner", "id": "winner"},
-        {"name": "Total Participants", "id": "total_participants"}
-    ]
-
-    return (kills_fig, best_hit_fig, games_played_fig,
-            df_user_stats.to_dict('records'), user_stats_columns,
-            df_recent_games.to_dict('records'), recent_games_columns)
+    return user_stats, recent_games
 
 if __name__ == '__main__':
     app.run_server(debug=True)
